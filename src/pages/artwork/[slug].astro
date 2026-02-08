@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const artworks = await getCollection('artworks');
+  return artworks.map((artwork) => ({
+    params: { slug: artwork.slug },
+    props: { artwork },
+  }));
+}
+
+const { artwork } = Astro.props;
+const { Content } = await artwork.render();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
+const basePath = base ? `${base}/` : '/';
+const categoryHref = artwork.data.category === 'fine-art' ? `${basePath}fine-art` : artwork.data.category === 'film' ? `${basePath}film` : basePath;
+---
+
+<BaseLayout title={`${artwork.data.title} | Moshe Roth`} description={artwork.data.description ?? artwork.data.title}>
+  <article class="artwork">
+    <div class="image-container">
+      <img src={artwork.data.image} alt={artwork.data.title} />
+    </div>
+    <div class="info">
+      <h1>{artwork.data.title}</h1>
+      {artwork.data.year && <span class="year">{artwork.data.year}</span>}
+      {artwork.data.category && (
+        <a href={categoryHref} class="category">
+          {artwork.data.category}
+        </a>
+      )}
+      <div class="content">
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .artwork {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .image-container {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .info {
+    padding: 0 1rem;
+  }
+
+  .info h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.5rem;
+  }
+
+  .year {
+    font-size: 0.85rem;
+    color: #666;
+    margin-right: 1rem;
+  }
+
+  .category {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+  }
+
+  .category:hover {
+    opacity: 1;
+  }
+
+  .content {
+    margin-top: 2rem;
+    line-height: 1.7;
+    color: #444;
+  }
+
+  .content :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .artwork {
+      padding: 1rem;
+    }
+  }
+</style>
