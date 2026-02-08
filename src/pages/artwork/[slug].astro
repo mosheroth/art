@@ -23,9 +23,22 @@ const roomSrc = `${basePath}images/living-room.jpg`;
 
 <BaseLayout title={`${artwork.data.title} | Moshe Roth`} description={artwork.data.description ?? artwork.data.title}>
   <article class="artwork">
-    <div class="image-container">
-      <img src={imgSrc} alt={artwork.data.title} />
-    </div>
+    <section class="preview-comparison">
+      <div class="preview-item">
+        <h2>In your space</h2>
+        <div class="room-scene" style={`background-image: url('${roomSrc}')`}>
+          <div class="frame">
+            <img src={imgSrc} alt={artwork.data.title} />
+          </div>
+        </div>
+      </div>
+      <div class="preview-item">
+        <h2>Original</h2>
+        <div class="original-wrap">
+          <img src={imgSrc} alt={artwork.data.title} id="original-image" data-zoom={imgSrc} />
+        </div>
+      </div>
+    </section>
 
     <div class="details">
       <h1>{artwork.data.title}</h1>
@@ -80,14 +93,6 @@ const roomSrc = `${basePath}images/living-room.jpg`;
       </div>
     </div>
 
-    <section class="room-preview">
-      <h2>In your space</h2>
-      <div class="room-scene" style={`background-image: url('${roomSrc}')`}>
-        <div class="frame">
-          <img src={imgSrc} alt={artwork.data.title} />
-        </div>
-      </div>
-    </section>
   </article>
 </BaseLayout>
 
@@ -96,17 +101,6 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     max-width: 900px;
     margin: 0 auto;
     padding: 2rem;
-  }
-
-  .image-container {
-    width: 100%;
-    margin-bottom: 2rem;
-  }
-
-  .image-container img {
-    width: 100%;
-    height: auto;
-    display: block;
   }
 
   .details {
@@ -217,18 +211,40 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     margin-bottom: 1rem;
   }
 
-  .room-preview {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
+  .preview-comparison {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: flex-start;
   }
 
-  .room-preview h2 {
+  .preview-item {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .preview-item h2 {
     font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 0.1em;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: #666;
+  }
+
+  .original-wrap {
+    background: #f8f6f2;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: block;
+  }
+
+  .original-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: zoom-in;
+    vertical-align: top;
   }
 
   .room-scene {
@@ -236,27 +252,29 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     width: 100%;
     aspect-ratio: 4/3;
     max-height: 400px;
-    background-size: cover;
-    background-position: center top;
+    /* Zoom in on wall – piece appears larger without overlapping sofa */
+    background-size: 140%;
+    background-position: center 8%;
     background-repeat: no-repeat;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 12%;
     border-radius: 8px;
     overflow: hidden;
   }
 
   .frame {
-    width: 32%;
-    max-width: 200px;
+    position: absolute;
+    /* Wall only - well above sofa */
+    top: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20%;
+    max-width: 130px;
+    min-width: 80px;
     aspect-ratio: 3/4;
-    padding: 0.5rem;
+    padding: 0.4rem;
     background: #f5f0e8;
     box-shadow:
-      0 8px 24px rgba(0, 0, 0, 0.2),
-      0 2px 6px rgba(0, 0, 0, 0.1),
-      inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+      0 1px 4px rgba(0, 0, 0, 0.06),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -266,7 +284,7 @@ const roomSrc = `${basePath}images/living-room.jpg`;
   .frame img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
   }
 
@@ -275,14 +293,37 @@ const roomSrc = `${basePath}images/living-room.jpg`;
       padding: 1rem;
     }
 
+    .preview-comparison {
+      flex-direction: column;
+    }
+
     .room-scene {
       aspect-ratio: 3/4;
       max-height: 320px;
     }
 
     .frame {
-      width: 45%;
-      max-width: 160px;
+      top: 3%;
+      width: 26%;
+      max-width: 110px;
+      min-width: 65px;
     }
   }
 </style>
+
+<script>
+  import Drift from 'drift-zoom';
+  import 'drift-zoom/src/css/drift-basic.css';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const img = document.getElementById('original-image');
+    if (img) {
+      new Drift(img, {
+        inlinePane: true,
+        zoomFactor: 3,
+        injectBaseStyles: true,
+        handleTouch: false,
+      });
+    }
+  });
+</script>
