@@ -1,5 +1,6 @@
 ---
 title: Horizon
+titleHe: אופק
 image: /images/horizon.png
 category: for-sale
 year: "2025"
@@ -9,4 +10,4 @@ price: "₪1,400"
 sold: false
 ---
 
-Abstract landscape with horizontal bands of color—sky, deep blue horizon, and rich reddish-brown foreground. Loose, fluid watercolor technique.
+נוף מופשט עם פסים אופקיים של צבע—שמים, אופק כחול עמוק וחזית חום-אדמדם עשירה. טכניקת צבעי מים רופפת ושוטפת.

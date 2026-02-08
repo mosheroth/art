@@ -5,6 +5,8 @@ const artworksCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    titleHe: z.string().optional(),
+    titleEn: z.string().optional(),
     description: z.string().optional(),
     image: z.string(),
     category: z.string().optional(),

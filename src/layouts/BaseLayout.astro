@@ -1,18 +1,22 @@
 ---
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'Artist portfolio' } = Astro.props;
+const { title, description = 'תיק עבודות' } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
   <head>
     <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,6 +29,7 @@ const { title, description = 'Artist portfolio' } = Astro.props;
     <main>
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
 
@@ -42,7 +47,7 @@ const { title, description = 'Artist portfolio' } = Astro.props;
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Rubik', sans-serif;
     background: #fff;
     color: #111;
     -webkit-font-smoothing: antialiased;

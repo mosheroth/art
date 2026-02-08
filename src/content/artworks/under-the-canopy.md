@@ -1,5 +1,6 @@
 ---
 title: Under the Canopy
+titleHe: תחת הסכך
 image: /images/under-the-canopy.png
 category: for-sale
 year: "2025"
@@ -8,4 +9,4 @@ size: 30 × 40 cm
 price: "₪1,550"
 ---
 
-Silhouetted figures under green foliage with bright yellow light—an impressionistic watercolor study.
+דמויות מסילואטות תחת צמחייה ירוקה עם אור צהוב בוהק—מחקר צבעי מים אימפרסיוניסטי.

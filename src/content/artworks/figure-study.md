@@ -1,5 +1,6 @@
 ---
 title: Figure Study
+titleHe: רישום דמות
 image: /images/figure-study.png
 category: for-sale
 year: "2025"
@@ -8,4 +9,4 @@ size: 21 × 29 cm
 price: "₪1,200"
 ---
 
-Expressive watercolor of a figure in dynamic pose, with warm orange and red tones against green.
+צבעי מים מלאי הבעה של דמות בתנוחה דינמית, עם גוונים חמים של כתום ואדום על רקע ירוק.

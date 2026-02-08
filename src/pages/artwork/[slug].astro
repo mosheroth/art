@@ -21,11 +21,12 @@ const imgSrc = artwork.data.image.startsWith('/')
 const roomSrc = `${basePath}images/living-room.jpg`;
 ---
 
-<BaseLayout title={`${artwork.data.title} | Moshe Roth`} description={artwork.data.description ?? artwork.data.title}>
+<BaseLayout title={`${artwork.data.titleHe ?? artwork.data.title} | משה רוט`} description={artwork.data.description ?? artwork.data.titleHe ?? artwork.data.title}>
+  <div id="drift-zoom-root" dir="ltr" aria-hidden="true"></div>
   <article class="artwork">
     <section class="preview-comparison">
       <div class="preview-item">
-        <h2>In your space</h2>
+        <h2>בחלל שלך</h2>
         <div class="room-scene" style={`background-image: url('${roomSrc}')`}>
           <div class="frame">
             <img src={imgSrc} alt={artwork.data.title} />
@@ -33,38 +34,40 @@ const roomSrc = `${basePath}images/living-room.jpg`;
         </div>
       </div>
       <div class="preview-item">
-        <h2>Original</h2>
-        <div class="original-wrap">
+        <h2>מקור</h2>
+        <div class="original-wrap" dir="ltr">
           <img src={imgSrc} alt={artwork.data.title} id="original-image" data-zoom={imgSrc} />
         </div>
       </div>
     </section>
 
     <div class="details">
-      <h1>{artwork.data.title}</h1>
+      <h1 class="artwork-title">
+        {artwork.data.titleHe ?? artwork.data.title}
+      </h1>
       {artwork.data.year && <span class="year">{artwork.data.year}</span>}
       {artwork.data.category && (
         <a href={categoryHref} class="category">
-          {artwork.data.category}
+          {artwork.data.category === 'sketches' ? 'סקיצות' : 'למכירה'}
         </a>
       )}
 
       <dl class="info-list">
         {artwork.data.medium && (
           <>
-            <dt>Medium</dt>
+            <dt>מדיום</dt>
             <dd>{artwork.data.medium}</dd>
           </>
         )}
         {artwork.data.size && (
           <>
-            <dt>Size</dt>
+            <dt>גודל</dt>
             <dd>{artwork.data.size}</dd>
           </>
         )}
         {artwork.data.price && (
           <>
-            <dt>Price</dt>
+            <dt>מחיר</dt>
             <dd class="price">{artwork.data.price}</dd>
           </>
         )}
@@ -73,7 +76,7 @@ const roomSrc = `${basePath}images/living-room.jpg`;
       {artwork.data.price && (
         <div class={`availability ${artwork.data.sold ? 'sold' : 'available'}`}>
           <span class="availability-dot" aria-hidden="true"></span>
-          <span>{artwork.data.sold ? 'Sold' : 'Available'}</span>
+          <span>{artwork.data.sold ? 'נמכר' : 'זמין'}</span>
         </div>
       )}
 
@@ -84,7 +87,7 @@ const roomSrc = `${basePath}images/living-room.jpg`;
           rel="noopener noreferrer"
           class="contact-btn"
         >
-          Contact me on Instagram
+          יצירת קשר באינסטגרם
         </a>
       )}
 
@@ -107,7 +110,7 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     padding: 0 0 3rem;
   }
 
-  .details h1 {
+  .artwork-title {
     font-size: 1.5rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -117,7 +120,7 @@ const roomSrc = `${basePath}images/living-room.jpg`;
   .year {
     font-size: 0.85rem;
     color: #666;
-    margin-right: 1rem;
+    margin-inline-end: 1rem;
   }
 
   .category {
@@ -231,6 +234,17 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     color: #666;
   }
 
+  #drift-zoom-root {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  #drift-zoom-root .drift-zoom-pane {
+    pointer-events: none;
+  }
+
   .original-wrap {
     background: #f8f6f2;
     border-radius: 8px;
@@ -251,6 +265,11 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     width: 400px !important;
     height: 400px !important;
     border-radius: 200px !important;
+    direction: ltr;
+  }
+
+  :global(.drift-zoom-pane.drift-inline img) {
+    direction: ltr;
   }
 
   .room-scene {
@@ -323,12 +342,15 @@ const roomSrc = `${basePath}images/living-room.jpg`;
 
   document.addEventListener('DOMContentLoaded', () => {
     const img = document.getElementById('original-image');
-    if (img) {
+    const root = document.getElementById('drift-zoom-root');
+    if (img && root) {
       new Drift(img, {
         inlinePane: true,
         zoomFactor: 3,
         injectBaseStyles: true,
         handleTouch: false,
+        inlineContainer: root,
+        boundingBoxContainer: root,
       });
     }
   });

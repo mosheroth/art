@@ -1,5 +1,6 @@
 ---
 title: Flower Bouquet
+titleHe: זר פרחים
 image: /images/flower-bouquet.png
 category: for-sale
 year: "2025"
@@ -10,4 +11,4 @@ price: "₪1,650"
 sold: true
 ---
 
-Watercolor painting of a vibrant bouquet of flowers in a glass vase, set against a dark, moody background.
+ציור צבעי מים של זר פרחים מלא חיים באגרטל זכוכית, על רקע כהה ומלנכולי.

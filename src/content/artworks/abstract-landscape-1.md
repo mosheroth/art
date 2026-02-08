@@ -1,5 +1,6 @@
 ---
 title: Abstract Landscape
+titleHe: נוף מופשט
 image: /images/abstract-landscape-1.png
 category: for-sale
 year: "2025"
@@ -9,4 +10,4 @@ price: "₪1,200"
 sold: false
 ---
 
-Vibrant abstract watercolor with earthy tones, greens, blues, and reds. Loose, expressive washes with foreground elements against a softer background.
+צבעי מים מופשטים מלאי חיים עם גוונים ארציים, ירוקים, כחולים ואדומים. מברשות רפויות ומלאות הבעה עם אלמנטים בחזית על רקע רך.

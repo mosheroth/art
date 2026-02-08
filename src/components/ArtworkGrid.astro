@@ -42,12 +42,12 @@ artworks = artworks.sort((a, b) => {
           decoding="async"
         />
         <div class="overlay">
-          <span class="overlay-title">{artwork.data.title}</span>
+          <span class="overlay-title">{artwork.data.titleHe ?? artwork.data.title}</span>
           {artwork.data.price && <span class="overlay-price">{artwork.data.price}</span>}
           {artwork.data.price && (
             <span class={`overlay-status ${artwork.data.sold ? 'sold' : 'available'}`}>
               <span class="overlay-status-dot" aria-hidden="true"></span>
-              {artwork.data.sold ? 'Sold' : 'Available'}
+              {artwork.data.sold ? 'נמכר' : 'זמין'}
             </span>
           )}
         </div>

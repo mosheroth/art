@@ -1,5 +1,6 @@
 ---
 title: Standing Figure
+titleHe: דמות עומדת
 image: /images/standing-figure.png
 category: for-sale
 year: "2025"
@@ -9,4 +10,4 @@ price: "₪980"
 sold: false
 ---
 
-Abstract watercolor of a standing figure in shades of blue with warm brown and orange accents. Expressive, fluid style with generous negative space.
+צבעי מים מופשטים של דמות עומדת בגווני כחול עם אקסנטים חמים של חום וכתום. סגנון שוטף ומלא הבעה עם מרחב שלילי נדיב.

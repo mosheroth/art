@@ -1,5 +1,6 @@
 ---
 title: Beach Studies
+titleHe: סקיצות חוף
 image: /images/beach-studies.png
 category: for-sale
 year: "2025"
@@ -9,4 +10,4 @@ price: "₪1,050"
 sold: true
 ---
 
-Collage of four watercolor paintings—waterfront scenes, beach figures, and atmospheric studies.
+קולאז' של ארבעה ציורי צבעי מים—סצנות חוף, דמויות על החוף ומחקרים אטמוספריים.

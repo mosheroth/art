@@ -1,5 +1,6 @@
 ---
 title: City Sunset
+titleHe: שקיעה עירונית
 image: /images/city-sunset.png
 category: for-sale
 year: "2025"
@@ -8,4 +9,4 @@ size: 30 × 40 cm
 price: "₪1,650"
 ---
 
-Vivid sunset over silhouetted urban landscape—gradient sky from green through blue to warm orange-pink.
+שקיעה עזה מעל נוף עירוני מסילואט—שמים בגרדיאנט מירוק דרך כחול לכתום-ורוד חם.

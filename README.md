@@ -1,4 +1,4 @@
-# Moshe Roth — Artist Portfolio
+# Moshe Rot — Artist Portfolio
 
 A minimal, responsive artist portfolio website built with Astro. Designed for showcasing photographic and artistic works with a clean, gallery-first layout.
 

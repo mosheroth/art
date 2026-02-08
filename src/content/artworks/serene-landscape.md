@@ -1,5 +1,6 @@
 ---
 title: Serene Landscape
+titleHe: נוף שליו
 image: /images/serene-landscape.png
 category: for-sale
 year: "2025"
@@ -9,4 +10,4 @@ price: "₪1,250"
 sold: false
 ---
 
-Serene abstract landscape with three horizontal bands—sky, water, and land. Soft, muted tones in blues, teals, and earthy browns.
+נוף מופשט שליו עם שלושה פסים אופקיים—שמים, מים ואדמה. גוונים רכים ומושתקים בכחול, טורקיז וחומים ארציים.

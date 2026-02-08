@@ -2,15 +2,15 @@
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
 const basePath = base ? `${base}/` : '/';
 const navLinks = [
-  { href: basePath, label: 'FOR SALE' },
-  { href: `${basePath}sketches`, label: 'SKETCHES' },
-  { href: `${basePath}contact`, label: 'CONTACT' },
+  { href: basePath, label: 'למכירה' },
+  { href: `${basePath}sketches`, label: 'סקיצות' },
+  { href: `${basePath}contact`, label: 'צור קשר' },
 ];
 ---
 
 <header class="header">
   <div class="header-inner">
-    <a href={basePath} class="logo">MOSHE ROTH</a>
+    <a href={basePath} class="logo">משה רוט, ציורים למכירה</a>
     <nav class="nav">
       <ul class="nav-list">
         {navLinks.map((link) => (
@@ -33,7 +33,7 @@ const navLinks = [
         <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
       </svg>
     </a>
-    <button class="menu-toggle" aria-label="Toggle menu">
+    <button class="menu-toggle" aria-label="תפריט">
       <span></span>
       <span></span>
       <span></span>
@@ -115,7 +115,7 @@ const navLinks = [
     .nav {
       position: fixed;
       top: 0;
-      right: 0;
+      inset-inline-end: 0;
       height: 100vh;
       width: 280px;
       background: #fff;
@@ -126,6 +126,15 @@ const navLinks = [
     }
 
     .nav.is-open {
+      transform: translateX(0);
+    }
+
+    html[dir="rtl"] .nav {
+      transform: translateX(-100%);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    html[dir="rtl"] .nav.is-open {
       transform: translateX(0);
     }
 
@@ -140,7 +149,7 @@ const navLinks = [
     }
 
     .instagram {
-      margin-left: auto;
+      margin-inline-start: auto;
     }
 
     .menu-toggle {

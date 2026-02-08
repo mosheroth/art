@@ -1,5 +1,6 @@
 ---
 title: Abstract Seascape
+titleHe: נוף ים מופשט
 image: /images/abstract-seascape.png
 category: for-sale
 year: "2025"
@@ -9,4 +10,4 @@ price: "₪1,350"
 sold: false
 ---
 
-Abstract landscape or seascape with blue sky, earthy browns and oranges. A dark horizon line divides the composition. Expressive, moody watercolor.
+נוף ים או נוף מופשט עם שמים כחולים, חומים וכתומים ארציים. קו אופק כהה מפריד את הקומפוזיציה. צבעי מים מלאי הבעה ומלנכוליים.
