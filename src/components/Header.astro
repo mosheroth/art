@@ -1,24 +1,23 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
 const basePath = base ? `${base}/` : '/';
-const navLinks = [
-  { href: `${basePath}workshops`, label: 'סדנאות' },
-  { href: `${basePath}contact`, label: 'צור קשר' },
-];
+const navLinks: { href: string; label: string }[] = [];
 ---
 
 <header class="header">
   <div class="header-inner">
     <a href={basePath} class="logo">משה רוט, ציורים</a>
-    <nav class="nav">
-      <ul class="nav-list">
-        {navLinks.map((link) => (
-          <li>
-            <a href={link.href} class="nav-link">{link.label}</a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    {navLinks.length > 0 && (
+      <nav class="nav">
+        <ul class="nav-list">
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="nav-link">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
     <a
       href="https://www.instagram.com/mzsrtgzr2/"
       target="_blank"
@@ -32,11 +31,13 @@ const navLinks = [
         <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
       </svg>
     </a>
+    {navLinks.length > 0 && (
     <button class="menu-toggle" aria-label="תפריט">
       <span></span>
       <span></span>
       <span></span>
     </button>
+    )}
   </div>
 </header>
 

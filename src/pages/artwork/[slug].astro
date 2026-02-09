@@ -28,6 +28,10 @@ const roomSrc = `${basePath}images/living-room.jpg`;
 <BaseLayout title={`${artwork.data.titleHe ?? artwork.data.title} | משה רוט`} description={artwork.data.description ?? artwork.data.titleHe ?? artwork.data.title}>
   <div id="drift-zoom-root" dir="ltr" aria-hidden="true"></div>
   <article class="artwork">
+    <a href={basePath} class="back-btn">
+      <span class="back-btn-arrow" aria-hidden="true">→</span>
+      חזרה
+    </a>
     <section class="preview-comparison">
       <div class="preview-item">
         <h2>בחלל שלך</h2>
@@ -100,6 +104,10 @@ const roomSrc = `${basePath}images/living-room.jpg`;
       </div>
     </div>
 
+    <a href={basePath} class="back-btn back-btn-bottom">
+      <span class="back-btn-arrow" aria-hidden="true">→</span>
+      חזרה
+    </a>
   </article>
 </BaseLayout>
 
@@ -109,6 +117,33 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     margin: 0 auto;
     padding: 2rem;
     overflow-x: hidden;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: #666;
+    transition: color 0.2s;
+  }
+
+  .back-btn:hover {
+    color: #111;
+  }
+
+  .back-btn-arrow {
+    font-size: 1.1em;
+  }
+
+  .back-btn-bottom {
+    margin-top: 2rem;
+    margin-bottom: 0;
+    display: block;
   }
 
   .details {
@@ -336,6 +371,13 @@ const roomSrc = `${basePath}images/living-room.jpg`;
       flex-direction: column;
     }
 
+    .back-btn {
+      order: 0;
+      padding: 0.6rem 0.3rem 0.6rem 0;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
     .details {
       order: 1;
       padding-bottom: 1.5rem;
@@ -350,6 +392,10 @@ const roomSrc = `${basePath}images/living-room.jpg`;
 
     .preview-item:first-child h2 {
       margin-bottom: 0.75rem;
+    }
+
+    .back-btn-bottom {
+      order: 3;
     }
 
     .room-scene {
