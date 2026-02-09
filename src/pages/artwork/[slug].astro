@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { getCategoryLabel, getCategorySlugForArtwork } from '../../lib/categories';
 
 export async function getStaticPaths() {
   const artworks = await getCollection('artworks');
@@ -14,7 +15,10 @@ const { artwork } = Astro.props;
 const { Content } = await artwork.render();
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
 const basePath = base ? `${base}/` : '/';
-const categoryHref = artwork.data.category === 'sketches' ? `${basePath}sketches` : basePath;
+
+const categorySlug = getCategorySlugForArtwork(artwork.data);
+const categoryHref = categorySlug ? `${basePath}${categorySlug}` : basePath;
+const categoryLabel = getCategoryLabel(categorySlug) || 'הכל';
 const imgSrc = artwork.data.image.startsWith('/')
   ? `${basePath}${artwork.data.image.slice(1)}`
   : `${basePath}${artwork.data.image}`;
@@ -46,9 +50,9 @@ const roomSrc = `${basePath}images/living-room.jpg`;
         {artwork.data.titleHe ?? artwork.data.title}
       </h1>
       {artwork.data.year && <span class="year">{artwork.data.year}</span>}
-      {artwork.data.category && (
+      {categorySlug && (
         <a href={categoryHref} class="category">
-          {artwork.data.category === 'sketches' ? 'סקיצות' : 'למכירה'}
+          {categoryLabel}
         </a>
       )}
 
@@ -104,6 +108,7 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     max-width: 900px;
     margin: 0 auto;
     padding: 2rem;
+    overflow-x: hidden;
   }
 
   .details {
@@ -224,6 +229,7 @@ const roomSrc = `${basePath}images/living-room.jpg`;
   .preview-item {
     flex: 1;
     min-width: 0;
+    overflow: hidden;
   }
 
   .preview-item h2 {
@@ -272,14 +278,14 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     direction: ltr;
   }
 
+  /* Unified coordinates – same for all viewports so the frame never moves */
   .room-scene {
     position: relative;
     width: 100%;
     aspect-ratio: 4/3;
     max-height: 400px;
-    /* Zoom in on wall – piece appears larger without overlapping sofa */
-    background-size: 140%;
-    background-position: center 8%;
+    background-size: 180%;
+    background-position: center 12%;
     background-repeat: no-repeat;
     border-radius: 8px;
     overflow: hidden;
@@ -287,13 +293,12 @@ const roomSrc = `${basePath}images/living-room.jpg`;
 
   .frame {
     position: absolute;
-    /* Wall only - well above sofa */
-    top: 4%;
+    top: 10%;
     left: 50%;
     transform: translateX(-50%);
-    width: 20%;
-    max-width: 130px;
-    min-width: 80px;
+    width: 28%;
+    max-width: 100%;
+    max-height: 75%;
     aspect-ratio: 3/4;
     padding: 0.4rem;
     background: #f5f0e8;
@@ -304,35 +309,47 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    direction: ltr;
   }
 
   .frame img {
     width: 100%;
     height: 100%;
+    min-height: 0;
     object-fit: contain;
+    object-position: center;
     display: block;
   }
 
   @media (max-width: 640px) {
     .artwork {
-      padding: 1rem;
+      padding: 1rem 1rem 2rem;
     }
 
     .preview-comparison {
       flex-direction: column;
+      gap: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .preview-item:first-child {
+      margin-inline: -1rem;
+      width: calc(100% + 2rem);
+      max-width: 100vw;
+      overflow: hidden;
+    }
+
+    .preview-item:first-child h2 {
+      padding-inline: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     .room-scene {
-      aspect-ratio: 3/4;
-      max-height: 320px;
+      border-radius: 0;
+      /* Same as desktop – no change */
     }
 
-    .frame {
-      top: 3%;
-      width: 26%;
-      max-width: 110px;
-      min-width: 65px;
-    }
+    /* Frame: same coordinates – no change */
   }
 </style>
 

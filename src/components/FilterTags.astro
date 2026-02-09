@@ -1,0 +1,262 @@
+---
+import { PRICE_CATEGORIES, STATUS_CATEGORIES, SUBJECT_CATEGORIES } from '../lib/categories';
+
+interface Props {
+  activePrice?: string;
+  activeStatus?: string;
+  activeSubject?: string;
+}
+
+const { activePrice = '', activeStatus = '', activeSubject = '' } = Astro.props;
+---
+
+<div class="filter-bar" id="filter-bar">
+  <div class="filter-row">
+    <span class="filter-label">מחיר:</span>
+    <div class="filter-tags" data-filter-type="price">
+      {PRICE_CATEGORIES.map((cat) => (
+        <button
+          type="button"
+          class={`filter-tag ${activePrice === cat.slug ? 'active' : ''}`}
+          data-value={cat.slug}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+  </div>
+  <div class="donation-explanation" id="donation-explanation" data-visible={activePrice === 'donation'}>
+    <p>
+      ציורים לתרומה מתקבלים בתשלום דרך תרומה. בוחרים סכום שתרצו לתרום לאחד הגופים שאבחר,
+      שולחים צילום מסך — ויכולים לקבל את הציור.
+    </p>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">נושא:</span>
+    <div class="filter-tags" data-filter-type="subject">
+      {SUBJECT_CATEGORIES.map((cat) => (
+        <button
+          type="button"
+          class={`filter-tag ${activeSubject === cat.slug ? 'active' : ''}`}
+          data-value={cat.slug}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">סטטוס:</span>
+    <div class="filter-tags" data-filter-type="status">
+      {STATUS_CATEGORIES.map((cat) => (
+        <button
+          type="button"
+          class={`filter-tag ${activeStatus === cat.slug ? 'active' : ''}`}
+          data-value={cat.slug}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .filter-bar {
+    position: sticky;
+    top: 60px;
+    z-index: 90;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 0.75rem;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+  }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .filter-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .donation-explanation {
+    display: none;
+    margin-bottom: 1rem;
+    padding: 1rem 1.25rem;
+    background: #f5f5f5;
+    border-right: 3px solid #222;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .donation-explanation[data-visible="true"] {
+    display: block;
+  }
+
+  .donation-explanation p {
+    margin: 0;
+  }
+
+  .filter-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #666;
+    min-width: 3.5rem;
+  }
+
+  .filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .filter-tag {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    border: 1px solid #ddd;
+    border-radius: 2rem;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-tag:hover {
+    border-color: #999;
+    background: #f8f8f8;
+  }
+
+  .filter-tag.active {
+    border-color: #111;
+    background: #111;
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .filter-bar {
+      padding: 0.75rem 1rem 0.5rem;
+    }
+
+    .filter-tag {
+      font-size: 0.75rem;
+      padding: 0.35rem 0.75rem;
+    }
+  }
+</style>
+
+<script>
+  function getParams() {
+    const url = new URL(window.location.href);
+    return {
+      price: url.searchParams.get('price') || '',
+      status: url.searchParams.get('status') || '',
+      subject: url.searchParams.get('subject') || '',
+    };
+  }
+
+  function applyFilters(price: string, status: string, subject: string) {
+    const items = document.querySelectorAll('.grid-item');
+    items.forEach((el) => {
+      const priceCat = (el as HTMLElement).dataset.priceCat || '';
+      const priceNum = parseInt((el as HTMLElement).dataset.price || '', 10);
+      const isDonation = (el as HTMLElement).dataset.donation === 'true';
+      const sold = (el as HTMLElement).dataset.sold === 'true';
+      const subjects = ((el as HTMLElement).dataset.subjects || '').split(',').filter(Boolean);
+
+      let matchPrice = true;
+      if (price === 'donation') {
+        matchPrice = isDonation;
+      } else if (price === '250') {
+        matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum <= 250;
+      } else if (price === '500') {
+        matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum > 250 && priceNum <= 500;
+      } else if (price === '800') {
+        matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum > 500 && priceNum <= 800;
+      }
+
+      const matchStatus =
+        !status ||
+        (status === 'available' && !sold) ||
+        (status === 'sold' && sold);
+
+      const matchSubject = !subject || subjects.includes(subject);
+
+      (el as HTMLElement).style.display = matchPrice && matchStatus && matchSubject ? '' : 'none';
+    });
+  }
+
+  function updateUrl(price: string, status: string, subject: string) {
+    const url = new URL(window.location.href);
+    if (price) url.searchParams.set('price', price);
+    else url.searchParams.delete('price');
+    if (status) url.searchParams.set('status', status);
+    else url.searchParams.delete('status');
+    if (subject) url.searchParams.set('subject', subject);
+    else url.searchParams.delete('subject');
+    window.history.replaceState({}, '', url.toString());
+  }
+
+  function setActiveButton(type: 'price' | 'status', value: string) {
+    const container = document.querySelector(`[data-filter-type="${type}"]`);
+    container?.querySelectorAll('.filter-tag').forEach((btn) => {
+      btn.classList.toggle('active', (btn as HTMLElement).dataset.value === value);
+    });
+  }
+
+  function setDonationExplanationVisible(visible: boolean) {
+    const el = document.getElementById('donation-explanation');
+    if (el) el.dataset.visible = visible ? 'true' : 'false';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const bar = document.getElementById('filter-bar');
+    const { price, status, subject } = getParams();
+
+    applyFilters(price, status, subject);
+    setActiveButton('price', price);
+    setActiveButton('status', status);
+    setActiveButton('subject', subject);
+    setDonationExplanationVisible(price === 'donation');
+
+    bar?.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('.filter-tag');
+      if (!btn) return;
+
+      const type = (btn.closest('[data-filter-type]') as HTMLElement)?.dataset.filterType;
+      const value = (btn as HTMLElement).dataset.value || '';
+
+      if (type === 'price') {
+        const newPrice = value;
+        const { status: s, subject: sub } = getParams();
+        updateUrl(newPrice, s, sub);
+        setActiveButton('price', newPrice);
+        applyFilters(newPrice, s, sub);
+        setDonationExplanationVisible(newPrice === 'donation');
+      } else if (type === 'status') {
+        const newStatus = value;
+        const { price: p, subject: sub } = getParams();
+        updateUrl(p, newStatus, sub);
+        setActiveButton('status', newStatus);
+        applyFilters(p, newStatus, sub);
+      } else if (type === 'subject') {
+        const newSubject = value;
+        const { price: p, status: s } = getParams();
+        updateUrl(p, s, newSubject);
+        setActiveButton('subject', newSubject);
+        applyFilters(p, s, newSubject);
+      }
+    });
+  });
+</script>

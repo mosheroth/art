@@ -1,0 +1,12 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
+const basePath = base ? `${base}/` : '/';
+const redirectUrl = `${basePath}?price=500`;
+---
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content={`0;url=${redirectUrl}`} />
+</head>
+<body>מעביר...</body>
+</html>

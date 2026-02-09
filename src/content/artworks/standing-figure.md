@@ -6,8 +6,9 @@ category: for-sale
 year: "2025"
 medium: Watercolor on paper
 size: 21 × 29 cm
-price: "₪980"
+price: "₪450"
 sold: false
+subjects: [figure]
 ---
 
 צבעי מים מופשטים של דמות עומדת בגווני כחול עם אקסנטים חמים של חום וכתום. סגנון שוטף ומלא הבעה עם מרחב שלילי נדיב.

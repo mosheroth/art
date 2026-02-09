@@ -1,8 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FilterTags from '../components/FilterTags.astro';
 import ArtworkGrid from '../components/ArtworkGrid.astro';
+
+const url = Astro.url;
+const price = url.searchParams.get('price') || '';
+const status = url.searchParams.get('status') || '';
+const subject = url.searchParams.get('subject') || '';
 ---
 
 <BaseLayout title="משה רוט | תיק עבודות" description="עבודות צבעי מים למכירה">
-  <ArtworkGrid category="for-sale" />
+  <FilterTags activePrice={price} activeStatus={status} activeSubject={subject} />
+  <ArtworkGrid clientFilter={true} />
 </BaseLayout>

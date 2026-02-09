@@ -6,8 +6,9 @@ category: for-sale
 year: "2025"
 medium: Watercolor on paper
 size: 30 × 40 cm
-price: "₪1,200"
+price: "₪750"
 sold: false
+subjects: [landscape]
 ---
 
 צבעי מים מופשטים מלאי חיים עם גוונים ארציים, ירוקים, כחולים ואדומים. מברשות רפויות ומלאות הבעה עם אלמנטים בחזית על רקע רך.

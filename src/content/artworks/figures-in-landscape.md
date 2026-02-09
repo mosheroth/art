@@ -6,7 +6,8 @@ category: for-sale
 year: "2025"
 medium: Watercolor on paper
 size: 30 × 40 cm
-price: "₪1,400"
+price: "₪650"
+subjects: [figure, landscape]
 ---
 
 נוף שליו עם שתי דמויות שנחות בחזית, תחת שמים מעוננים.

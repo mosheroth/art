@@ -16,6 +16,7 @@ const artworksCollection = defineCollection({
     size: z.string().optional(),
     price: z.string().optional(),
     sold: z.boolean().default(false),
+    subjects: z.array(z.string()).optional().default([]),
   }),
 });
 

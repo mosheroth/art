@@ -2,15 +2,14 @@
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
 const basePath = base ? `${base}/` : '/';
 const navLinks = [
-  { href: basePath, label: 'למכירה' },
-  { href: `${basePath}sketches`, label: 'סקיצות' },
+  { href: `${basePath}workshops`, label: 'סדנאות' },
   { href: `${basePath}contact`, label: 'צור קשר' },
 ];
 ---
 
 <header class="header">
   <div class="header-inner">
-    <a href={basePath} class="logo">משה רוט, ציורים למכירה</a>
+    <a href={basePath} class="logo">משה רוט, ציורים</a>
     <nav class="nav">
       <ul class="nav-list">
         {navLinks.map((link) => (

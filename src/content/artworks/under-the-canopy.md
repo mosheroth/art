@@ -6,7 +6,8 @@ category: for-sale
 year: "2025"
 medium: Watercolor on paper
 size: 30 × 40 cm
-price: "₪1,550"
+price: "₪180"
+subjects: [figure, landscape]
 ---
 
 דמויות מסילואטות תחת צמחייה ירוקה עם אור צהוב בוהק—מחקר צבעי מים אימפרסיוניסטי.
