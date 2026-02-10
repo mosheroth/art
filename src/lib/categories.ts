@@ -19,6 +19,9 @@ export const SUBJECT_CATEGORIES = [
   { slug: 'landscape', label: 'נוף' },
   { slug: 'stilllife', label: 'דומם' },
   { slug: 'urban', label: 'עיר' },
+  { slug: 'hod-hasharon', label: 'הוד השרון' },
+  { slug: 'yarkon', label: 'ירקון' },
+  { slug: 'tel-aviv', label: 'תל אביב' },
 ] as const;
 
 export type PriceSlug = (typeof PRICE_CATEGORIES)[number]['slug'];

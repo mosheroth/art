@@ -13,7 +13,9 @@ const { activePrice = '', activeStatus = '', activeSubject = '' } = Astro.props;
 <div class="filter-bar" id="filter-bar">
   <div class="filter-row">
     <span class="filter-label">מחיר:</span>
-    <div class="filter-tags" data-filter-type="price">
+    <div class="filter-tags-wrap">
+      <button type="button" class="filter-scroll-btn filter-scroll-prev" aria-label="גלילה לאחור" data-for="price"></button>
+      <div class="filter-tags" data-filter-type="price">
       {PRICE_CATEGORIES.map((cat) => (
         <button
           type="button"
@@ -23,6 +25,8 @@ const { activePrice = '', activeStatus = '', activeSubject = '' } = Astro.props;
           {cat.label}
         </button>
       ))}
+      </div>
+      <button type="button" class="filter-scroll-btn filter-scroll-next" aria-label="גלילה להבא" data-for="price"></button>
     </div>
   </div>
   <div class="donation-explanation" id="donation-explanation" data-visible={activePrice === 'donation'}>
@@ -33,7 +37,9 @@ const { activePrice = '', activeStatus = '', activeSubject = '' } = Astro.props;
   </div>
   <div class="filter-row">
     <span class="filter-label">נושא:</span>
-    <div class="filter-tags" data-filter-type="subject">
+    <div class="filter-tags-wrap">
+      <button type="button" class="filter-scroll-btn filter-scroll-prev" aria-label="גלילה לאחור" data-for="subject"></button>
+      <div class="filter-tags" data-filter-type="subject">
       {SUBJECT_CATEGORIES.map((cat) => (
         <button
           type="button"
@@ -43,11 +49,15 @@ const { activePrice = '', activeStatus = '', activeSubject = '' } = Astro.props;
           {cat.label}
         </button>
       ))}
+      </div>
+      <button type="button" class="filter-scroll-btn filter-scroll-next" aria-label="גלילה להבא" data-for="subject"></button>
     </div>
   </div>
   <div class="filter-row">
     <span class="filter-label">סטטוס:</span>
-    <div class="filter-tags" data-filter-type="status">
+    <div class="filter-tags-wrap">
+      <button type="button" class="filter-scroll-btn filter-scroll-prev" aria-label="גלילה לאחור" data-for="status"></button>
+      <div class="filter-tags" data-filter-type="status">
       {STATUS_CATEGORIES.map((cat) => (
         <button
           type="button"
@@ -57,6 +67,8 @@ const { activePrice = '', activeStatus = '', activeSubject = '' } = Astro.props;
           {cat.label}
         </button>
       ))}
+      </div>
+      <button type="button" class="filter-scroll-btn filter-scroll-next" aria-label="גלילה להבא" data-for="status"></button>
     </div>
   </div>
 </div>
@@ -112,15 +124,92 @@ const { activePrice = '', activeStatus = '', activeSubject = '' } = Astro.props;
     min-width: 3.5rem;
   }
 
+  .filter-tags-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 0;
+    flex: 1;
+    position: relative;
+  }
+
+  .filter-scroll-btn {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+    font-size: 0.75rem;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 0 2px #fff;
+  }
+
+  .filter-scroll-btn:hover {
+    background: #f5f5f5;
+    border-color: #999;
+  }
+
+  .filter-scroll-btn::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-inline-start: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    margin-inline-start: 2px;
+  }
+
+  .filter-scroll-next::before {
+    transform: rotate(135deg);
+    margin-inline-start: -2px;
+  }
+
   .filter-tags {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.5rem;
     align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding-inline-end: 0.25rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .filter-tags::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .filter-tags::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  .filter-tags::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 2px;
+  }
+
+  .filter-tags::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 2px;
   }
 
   .filter-tag {
     display: inline-block;
+    flex-shrink: 0;
     padding: 0.4rem 0.9rem;
     font-size: 0.8rem;
     font-weight: 500;
@@ -229,6 +318,19 @@ const { activePrice = '', activeStatus = '', activeSubject = '' } = Astro.props;
     setActiveButton('status', status);
     setActiveButton('subject', subject);
     setDonationExplanationVisible(price === 'donation');
+
+    bar?.querySelectorAll('.filter-scroll-btn').forEach((scrollBtn) => {
+      scrollBtn.addEventListener('click', () => {
+        const wrap = (scrollBtn as HTMLElement).closest('.filter-tags-wrap');
+        const tagsEl = wrap?.querySelector('.filter-tags') as HTMLElement | null;
+        if (!tagsEl) return;
+        const isNext = (scrollBtn as HTMLElement).classList.contains('filter-scroll-next');
+        const delta = 180;
+        const rtl = document.documentElement.dir === 'rtl';
+        const scrollAmount = isNext ? (rtl ? -delta : delta) : (rtl ? delta : -delta);
+        tagsEl.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+    });
 
     bar?.addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest('.filter-tag');
