@@ -2,12 +2,12 @@
 title: Flower Bouquet
 titleHe: זר פרחים
 image: /images/flower-bouquet.png
-category: donation
+category: for-sale
 year: "2026"
 featured: true
 medium: Watercolor on paper
 size: 30 × 40 cm
-price: "תרומה"
+price: "₪100"
 sold: true
 subjects: [stilllife]
 ---
