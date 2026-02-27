@@ -335,8 +335,10 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
       const elA = a as HTMLElement;
       const elB = b as HTMLElement;
       if (sort === 'price-asc' || sort === 'price-desc') {
-        const na = parseInt(elA.dataset.price || '', 10) || 1e9;
-        const nb = parseInt(elB.dataset.price || '', 10) || 1e9;
+        const parseNum = (el: HTMLElement) =>
+          el.dataset.donation === 'true' ? 0 : (parseInt(el.dataset.price || '', 10) || -1);
+        const na = parseNum(elA);
+        const nb = parseNum(elB);
         return sort === 'price-asc' ? na - nb : nb - na;
       }
       const dateA = normDateKey(elA.dataset.date || '');

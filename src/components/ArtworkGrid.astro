@@ -25,10 +25,8 @@ function sortKeyDate(dateStr: string, yearStr?: string): string {
 function sortArtworks(artworks: typeof import('astro:content').CollectionEntry<'artworks'>[], order: SortSlug) {
   return [...artworks].sort((a, b) => {
     if (order === 'price-asc' || order === 'price-desc') {
-      const pa = parsePrice(a.data.price);
-      const pb = parsePrice(b.data.price);
-      const na = pa ?? 1e9;
-      const nb = pb ?? 1e9;
+      const na = a.data.category === 'donation' ? 0 : (parsePrice(a.data.price) ?? -1);
+      const nb = b.data.category === 'donation' ? 0 : (parsePrice(b.data.price) ?? -1);
       return order === 'price-asc' ? na - nb : nb - na;
     }
     const dateA = sortKeyDate(a.data.date || '', a.data.year);
