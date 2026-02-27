@@ -340,6 +340,8 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = ''
     setActiveButton('subject', subject);
     setActiveButton('sort', sort);
 
+    if (!sort) shuffleGrid();
+
     bar?.querySelectorAll('.filter-scroll-btn').forEach((scrollBtn) => {
       scrollBtn.addEventListener('click', () => {
         const wrap = (scrollBtn as HTMLElement).closest('.filter-tags-wrap');
