@@ -1,9 +1,9 @@
 export const PRICE_CATEGORIES = [
   { slug: '', label: 'הכל' },
-  { slug: '800', label: 'עד ₪800' },
-  { slug: '500', label: 'עד ₪500' },
-  { slug: '250', label: 'עד ₪250' },
-  { slug: 'donation', label: 'תשלום דרך תרומה' },
+  { slug: '250', label: 'עד 250' },
+  { slug: '250-400', label: '250-400' },
+  { slug: '400-800', label: '400-800' },
+  { slug: '800+', label: 'מעל 800' },
 ] as const;
 
 export const STATUS_CATEGORIES = [
@@ -38,8 +38,9 @@ export function getPriceCategory(data: { category?: string; price?: string }): s
   if (data.category === 'donation') return 'donation';
   const priceNum = parsePrice(data.price);
   if (priceNum !== null && priceNum <= 250) return '250';
-  if (priceNum !== null && priceNum > 250 && priceNum <= 500) return '500';
-  if (priceNum !== null && priceNum > 500 && priceNum <= 800) return '800';
+  if (priceNum !== null && priceNum > 250 && priceNum <= 400) return '250-400';
+  if (priceNum !== null && priceNum > 400 && priceNum <= 800) return '400-800';
+  if (priceNum !== null && priceNum > 800) return '800+';
   return '';
 }
 
@@ -56,9 +57,9 @@ export function filterArtworks(
     const matchPrice =
       !priceSlug ||
       (priceSlug === '250' && category !== 'donation' && priceNum !== null && priceNum <= 250) ||
-      (priceSlug === '500' && category !== 'donation' && priceNum !== null && priceNum > 250 && priceNum <= 500) ||
-      (priceSlug === '800' && category !== 'donation' && priceNum !== null && priceNum > 500 && priceNum <= 800) ||
-      (priceSlug === 'donation' && category === 'donation');
+      (priceSlug === '250-400' && category !== 'donation' && priceNum !== null && priceNum > 250 && priceNum <= 400) ||
+      (priceSlug === '400-800' && category !== 'donation' && priceNum !== null && priceNum > 400 && priceNum <= 800) ||
+      (priceSlug === '800+' && category !== 'donation' && priceNum !== null && priceNum > 800);
 
     const matchStatus =
       !statusSlug ||

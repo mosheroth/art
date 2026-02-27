@@ -31,7 +31,9 @@ function sortArtworks(artworks: typeof import('astro:content').CollectionEntry<'
     }
     const dateA = sortKeyDate(a.data.date || '', a.data.year);
     const dateB = sortKeyDate(b.data.date || '', b.data.year);
-    return dateB.localeCompare(dateA);
+    const cmp = dateB.localeCompare(dateA);
+    if (cmp !== 0) return cmp;
+    return a.slug.localeCompare(b.slug);
   });
 }
 
@@ -66,6 +68,7 @@ artworks = sortArtworks(artworks, sort as SortSlug);
         data-price-cat={priceCat || undefined}
         data-price={priceNum ?? undefined}
         data-date={sortDate || undefined}
+        data-slug={artwork.slug}
         data-donation={isDonation ? 'true' : undefined}
         data-sold={isSold ? 'true' : 'false'}
         data-subjects={subjects || undefined}

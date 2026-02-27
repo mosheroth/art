@@ -1,9 +1,9 @@
 ---
 title: Figure Study
-titleHe: רישום דמות
+titleHe: דמות
 image: /images/figure-study.png
 category: for-sale
-year: "2025"
+year: "2026"
 medium: Watercolor on paper
 size: 21 × 29 cm
 price: "₪250"

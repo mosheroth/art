@@ -181,7 +181,7 @@ async function run() {
     `titleHe: ${escapeYaml(titleHe)}`,
     `image: /images/${imageName}`,
     'category: for-sale',
-    'year: "2025"',
+    'year: "2026"',
     `medium: ${escapeYaml(medium)}`,
     `size: ${escapeYaml(size)}`,
     `price: ${escapeYaml(price)}`,

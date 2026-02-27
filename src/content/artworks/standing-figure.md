@@ -3,7 +3,7 @@ title: Standing Figure
 titleHe: דמות עומדת
 image: /images/standing-figure.png
 category: for-sale
-year: "2025"
+year: "2026"
 medium: Watercolor on paper
 size: 21 × 29 cm
 price: "₪180"

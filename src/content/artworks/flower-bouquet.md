@@ -3,7 +3,7 @@ title: Flower Bouquet
 titleHe: זר פרחים
 image: /images/flower-bouquet.png
 category: donation
-year: "2025"
+year: "2026"
 featured: true
 medium: Watercolor on paper
 size: 30 × 40 cm

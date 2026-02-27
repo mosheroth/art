@@ -3,7 +3,7 @@ title: Flowers of Batya 3
 titleHe: פרחים של בתיה 3
 image: /images/flowers-batya-3.png
 category: for-sale
-year: "2025"
+year: "2026"
 medium: צבעי מים וגואש
 size: 30 × 40 cm
 price: "₪200"

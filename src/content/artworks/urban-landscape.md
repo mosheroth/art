@@ -3,7 +3,7 @@ title: Urban Landscape
 titleHe: נוף עירוני
 image: /images/urban-landscape.png
 category: for-sale
-year: "2025"
+year: "2026"
 medium: Watercolor on paper
 size: 30 × 40 cm
 price: "₪100"

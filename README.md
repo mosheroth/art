@@ -28,7 +28,7 @@ Open [http://localhost:4321/mosherothart](http://localhost:4321/mosherothart) (o
 title: My Artwork Title
 image: /images/my-artwork.jpg
 category: portfolio   # portfolio | fine-art | film
-year: "2025"
+year: "2026"
 featured: false
 ---
 

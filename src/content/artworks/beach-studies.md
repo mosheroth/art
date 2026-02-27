@@ -3,7 +3,7 @@ title: Beach Studies
 titleHe: סקיצות חוף
 image: /images/beach-studies.png
 category: for-sale
-year: "2025"
+year: "2026"
 medium: Watercolor on paper
 size: 21 × 29 cm
 price: "₪480"

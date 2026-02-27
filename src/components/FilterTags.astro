@@ -19,17 +19,21 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
 
 <div class="filter-bar" id="filter-bar">
   <div class="filter-row">
-    <span class="filter-label">מיון:</span>
-    <div class="filter-tags" data-filter-type="sort">
-      {SORT_OPTIONS.map((opt) => (
+    <span class="filter-label">נושא:</span>
+    <div class="filter-tags-wrap">
+      <button type="button" class="filter-scroll-btn filter-scroll-prev" aria-label="גלילה לאחור" data-for="subject"></button>
+      <div class="filter-tags" data-filter-type="subject">
+      {SUBJECT_CATEGORIES.map((cat) => (
         <button
           type="button"
-          class={`filter-tag ${activeSort === opt.value ? 'active' : ''}`}
-          data-value={opt.value}
+          class={`filter-tag ${activeSubject === cat.slug ? 'active' : ''}`}
+          data-value={cat.slug}
         >
-          {opt.label}
+          {cat.label}
         </button>
       ))}
+      </div>
+      <button type="button" class="filter-scroll-btn filter-scroll-next" aria-label="גלילה להבא" data-for="subject"></button>
     </div>
   </div>
   <div class="filter-row">
@@ -50,30 +54,6 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
       <button type="button" class="filter-scroll-btn filter-scroll-next" aria-label="גלילה להבא" data-for="price"></button>
     </div>
   </div>
-  <div class="donation-explanation" id="donation-explanation" data-visible={activePrice === 'donation'}>
-    <p>
-      ציורים לתרומה מתקבלים בתשלום דרך תרומה. בוחרים סכום שתרצו לתרום לאחד הגופים שאבחר,
-      שולחים צילום מסך — ויכולים לקבל את הציור.
-    </p>
-  </div>
-  <div class="filter-row">
-    <span class="filter-label">נושא:</span>
-    <div class="filter-tags-wrap">
-      <button type="button" class="filter-scroll-btn filter-scroll-prev" aria-label="גלילה לאחור" data-for="subject"></button>
-      <div class="filter-tags" data-filter-type="subject">
-      {SUBJECT_CATEGORIES.map((cat) => (
-        <button
-          type="button"
-          class={`filter-tag ${activeSubject === cat.slug ? 'active' : ''}`}
-          data-value={cat.slug}
-        >
-          {cat.label}
-        </button>
-      ))}
-      </div>
-      <button type="button" class="filter-scroll-btn filter-scroll-next" aria-label="גלילה להבא" data-for="subject"></button>
-    </div>
-  </div>
   <div class="filter-row">
     <span class="filter-label">סטטוס:</span>
     <div class="filter-tags-wrap">
@@ -90,6 +70,20 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
       ))}
       </div>
       <button type="button" class="filter-scroll-btn filter-scroll-next" aria-label="גלילה להבא" data-for="status"></button>
+    </div>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">מיון:</span>
+    <div class="filter-tags" data-filter-type="sort">
+      {SORT_OPTIONS.map((opt) => (
+        <button
+          type="button"
+          class={`filter-tag ${activeSort === opt.value ? 'active' : ''}`}
+          data-value={opt.value}
+        >
+          {opt.label}
+        </button>
+      ))}
     </div>
   </div>
 </div>
@@ -115,26 +109,6 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
 
   .filter-row:last-child {
     margin-bottom: 0;
-  }
-
-  .donation-explanation {
-    display: none;
-    margin-bottom: 1rem;
-    padding: 1rem 1.25rem;
-    background: #f5f5f5;
-    border-right: 3px solid #222;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: #333;
-  }
-
-  .donation-explanation[data-visible="true"] {
-    display: block;
-  }
-
-  .donation-explanation p {
-    margin: 0;
   }
 
   .filter-label {
@@ -287,14 +261,14 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
       const subjects = ((el as HTMLElement).dataset.subjects || '').split(',').filter(Boolean);
 
       let matchPrice = true;
-      if (price === 'donation') {
-        matchPrice = isDonation;
-      } else if (price === '250') {
+      if (price === '250') {
         matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum <= 250;
-      } else if (price === '500') {
-        matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum > 250 && priceNum <= 500;
-      } else if (price === '800') {
-        matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum > 500 && priceNum <= 800;
+      } else if (price === '250-400') {
+        matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum > 250 && priceNum <= 400;
+      } else if (price === '400-800') {
+        matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum > 400 && priceNum <= 800;
+      } else if (price === '800+') {
+        matchPrice = isDonation ? false : !isNaN(priceNum) && priceNum > 800;
       }
 
       const matchStatus =
@@ -343,7 +317,9 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
       }
       const dateA = normDateKey(elA.dataset.date || '');
       const dateB = normDateKey(elB.dataset.date || '');
-      return dateB.localeCompare(dateA);
+      const dateCmp = dateB.localeCompare(dateA);
+      if (dateCmp !== 0) return dateCmp;
+      return (elA.dataset.slug || '').localeCompare(elB.dataset.slug || '');
     });
     sorted.forEach((node) => grid.appendChild(node));
   }
@@ -355,11 +331,6 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
     });
   }
 
-  function setDonationExplanationVisible(visible: boolean) {
-    const el = document.getElementById('donation-explanation');
-    if (el) el.dataset.visible = visible ? 'true' : 'false';
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
     const bar = document.getElementById('filter-bar');
     const { price, status, subject, sort } = getParams();
@@ -369,7 +340,6 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
     setActiveButton('status', status);
     setActiveButton('subject', subject);
     setActiveButton('sort', sort);
-    setDonationExplanationVisible(price === 'donation');
 
     bar?.querySelectorAll('.filter-scroll-btn').forEach((scrollBtn) => {
       scrollBtn.addEventListener('click', () => {
@@ -397,7 +367,6 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = 'd
         updateUrl(newPrice, s, sub, sortVal);
         setActiveButton('price', newPrice);
         applyFilters(newPrice, s, sub);
-        setDonationExplanationVisible(newPrice === 'donation');
       } else if (type === 'status') {
         const newStatus = value;
         const { price: p, subject: sub, sort: sortVal } = getParams();
