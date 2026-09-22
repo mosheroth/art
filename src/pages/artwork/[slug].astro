@@ -2,216 +2,299 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getCategoryLabel } from '../../lib/categories';
+import { SITE } from '../../lib/site';
+import { img, url, artworkUrl } from '../../lib/paths';
 
 export async function getStaticPaths() {
   const artworks = await getCollection('artworks');
   return artworks.map((artwork) => ({
     params: { slug: artwork.slug },
-    props: { artwork },
+    props: { artwork, artworks },
   }));
 }
 
-const { artwork } = Astro.props;
+const { artwork, artworks } = Astro.props;
 const { Content } = await artwork.render();
-const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
-const basePath = base ? `${base}/` : '/';
 
+const title = artwork.data.titleHe ?? artwork.data.title;
 const subjectSlugs = Array.isArray(artwork.data.subjects) ? artwork.data.subjects : [];
-const imgSrc = artwork.data.image.startsWith('/')
-  ? `${basePath}${artwork.data.image.slice(1)}`
-  : `${basePath}${artwork.data.image}`;
-const roomSrc = `${basePath}images/living-room.jpg`;
+const imgSrc = img(artwork.data.image);
+const roomSrc = img('images/living-room.jpg');
+
+const others = artworks
+  .filter((entry) => entry.slug !== artwork.slug)
+  .filter((entry) => {
+    const shared = (entry.data.subjects ?? []).some((slug) => subjectSlugs.includes(slug));
+    return shared;
+  });
+const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.slug && !others.includes(entry))].slice(0, 4);
 ---
 
-<BaseLayout title={`${artwork.data.titleHe ?? artwork.data.title} | משה רוט`} description={artwork.data.description ?? artwork.data.titleHe ?? artwork.data.title}>
+<BaseLayout
+  title={`${title} | ${SITE.name}`}
+  description={artwork.data.description ?? `${title} — צבעי מים על נייר מאת ${SITE.name}`}
+>
   <div id="drift-zoom-root" dir="ltr" aria-hidden="true"></div>
+
   <article class="artwork">
-    <a href={basePath} class="back-btn">
-      <span class="back-btn-arrow" aria-hidden="true">→</span>
-      חזרה
-    </a>
-    <section class="preview-comparison">
-      <div class="preview-item">
-        <h2>בחלל שלך</h2>
-        <div class="room-scene" style={`background-image: url('${roomSrc}')`}>
-          <div class="frame">
-            <img src={imgSrc} alt={artwork.data.title} />
-          </div>
-        </div>
-      </div>
-      <div class="preview-item">
-        <h2>מקור</h2>
-        <div class="original-wrap" dir="ltr">
-          <img src={imgSrc} alt={artwork.data.title} id="original-image" data-zoom={imgSrc} />
-        </div>
-      </div>
-    </section>
-
-    <div class="details">
-      <h1 class="artwork-title">
-        {artwork.data.titleHe ?? artwork.data.title}
-      </h1>
-      {artwork.data.year && <span class="year">{artwork.data.year}</span>}
-      {subjectSlugs.length > 0 && (
-        <span class="subject-tags">
-          {subjectSlugs.map((slug) => (
-            <a href={`${basePath}?subject=${slug}`} class="category">
-              {getCategoryLabel(slug)}
-            </a>
-          ))}
-        </span>
-      )}
-
-      <dl class="info-list">
-        {artwork.data.medium && (
-          <>
-            <dt>מדיום</dt>
-            <dd>{artwork.data.medium}</dd>
-          </>
-        )}
-        {artwork.data.price && (
-          <>
-            <dt>מחיר</dt>
-            <dd class="price">{artwork.data.price}</dd>
-          </>
-        )}
-      </dl>
-
-      {artwork.data.price && (
-        <div class={`availability ${artwork.data.sold ? 'sold' : 'available'}`}>
-          <span class="availability-dot" aria-hidden="true"></span>
-          <span>{artwork.data.sold ? 'נמכר' : 'זמין'}</span>
-        </div>
-      )}
-
-      {artwork.data.price && !artwork.data.sold && (
-        <a
-          href="https://www.instagram.com/mosheroth85/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="contact-btn"
-        >
-          יצירת קשר באינסטגרם
-        </a>
-      )}
-
-      <div class="content">
-        <Content />
-      </div>
+    <div class="shell artwork-top">
+      <a href={url('gallery')} class="back-btn">
+        <span class="back-btn-arrow" aria-hidden="true">→</span>
+        לכל העבודות
+      </a>
     </div>
 
-    <a href={basePath} class="back-btn back-btn-bottom">
-      <span class="back-btn-arrow" aria-hidden="true">→</span>
-      חזרה
-    </a>
+    <figure class="artwork-stage">
+      <div class="stage-wash" style={`background-image: url('${imgSrc}')`} aria-hidden="true"></div>
+      <div class="stage-frame" dir="ltr">
+        <img src={imgSrc} alt={title} id="original-image" data-zoom={imgSrc} />
+      </div>
+      <figcaption class="stage-hint">העבירו את העכבר על הציור להגדלה</figcaption>
+    </figure>
+
+    <div class="shell artwork-body">
+      <div class="artwork-info">
+        <h1 class="artwork-title">{title}</h1>
+
+        <p class="artwork-tags">
+          {artwork.data.year && <span class="artwork-year">{artwork.data.year}</span>}
+          {subjectSlugs.map((slug) => (
+            <a href={`${url('gallery')}?subject=${slug}`} class="artwork-tag">{getCategoryLabel(slug)}</a>
+          ))}
+        </p>
+
+        <div class="artwork-text">
+          <Content />
+        </div>
+
+        <dl class="artwork-specs">
+          {artwork.data.medium && (
+            <div class="spec">
+              <dt>מדיום</dt>
+              <dd>{artwork.data.medium}</dd>
+            </div>
+          )}
+          {artwork.data.price && (
+            <div class="spec">
+              <dt>מחיר</dt>
+              <dd class="spec-price">{artwork.data.price}</dd>
+            </div>
+          )}
+          {artwork.data.price && (
+            <div class="spec">
+              <dt>זמינות</dt>
+              <dd class={`availability ${artwork.data.sold ? 'sold' : 'available'}`}>
+                <span class="availability-dot" aria-hidden="true"></span>
+                {artwork.data.sold ? 'נמכר' : 'זמין לרכישה'}
+              </dd>
+            </div>
+          )}
+        </dl>
+
+        {artwork.data.price && !artwork.data.sold && (
+          <div class="artwork-buy">
+            <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-solid">
+              לפנות לגבי הציור
+            </a>
+            <span class="artwork-buy-note">מקור אחד על נייר · מסירה בהוד השרון והמרכז, או משלוח בתיאום</span>
+          </div>
+        )}
+      </div>
+
+      <aside class="artwork-room">
+        <h2 class="room-title">בחלל שלך</h2>
+        <div class="room-scene" style={`background-image: url('${roomSrc}')`}>
+          <div class="room-frame">
+            <img src={imgSrc} alt={`${title} — הדמיה על קיר`} />
+          </div>
+        </div>
+        <p class="room-note">הדמיה להמחשת גודל ביחס לחדר</p>
+      </aside>
+    </div>
+
+    {more.length > 0 && (
+      <section class="shell artwork-more">
+        <header class="more-head">
+          <h2 class="display-lg">עבודות נוספות</h2>
+          <a href={url('gallery')} class="link-underline">לכל העבודות</a>
+        </header>
+        <ul class="more-list">
+          {more.map((entry) => (
+            <li>
+              <a href={artworkUrl(entry.slug)}>
+                <span class="more-image">
+                  <img src={img(entry.data.image)} alt={entry.data.titleHe ?? entry.data.title} loading="lazy" />
+                </span>
+                <span class="more-title">{entry.data.titleHe ?? entry.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
   </article>
 </BaseLayout>
 
 <style>
-  .artwork {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem;
-    overflow-x: hidden;
+  .artwork-top {
+    padding-top: clamp(1.25rem, 3vw, 2.25rem);
   }
 
   .back-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding: 0.5rem 0;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    color: #666;
+    padding: 0.4rem 0;
+    font-size: 0.95rem;
+    color: var(--ink-mute);
     transition: color 0.2s;
   }
 
   .back-btn:hover {
-    color: #111;
+    color: var(--ink);
   }
 
   .back-btn-arrow {
     font-size: 1.1em;
   }
 
-  .back-btn-bottom {
-    margin-top: 2rem;
-    margin-bottom: 0;
-    display: block;
+  /* The painting gets the whole stage, with its own colour as the backdrop */
+  .artwork-stage {
+    position: relative;
+    margin: clamp(1rem, 2.5vw, 2rem) 0 0;
+    padding: clamp(2rem, 5vw, 4.5rem) var(--gutter) clamp(1.5rem, 3vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    overflow: hidden;
+    isolation: isolate;
   }
 
-  .details {
-    padding: 0 0 3rem;
+  .stage-wash {
+    position: absolute;
+    inset: -20%;
+    z-index: -2;
+    background-size: cover;
+    background-position: center;
+    filter: blur(90px) saturate(120%);
+    opacity: 0.45;
+  }
+
+  .artwork-stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(247, 245, 241, 0.6), var(--paper));
+  }
+
+  .stage-frame {
+    padding: clamp(0.75rem, 1.6vw, 1.6rem);
+    background: var(--paper-white);
+    box-shadow:
+      0 1px 2px rgba(23, 20, 15, 0.08),
+      0 40px 80px -40px rgba(23, 20, 15, 0.5);
+  }
+
+  .stage-frame img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: min(74svh, 760px);
+    object-fit: contain;
+    cursor: zoom-in;
+    vertical-align: top;
+  }
+
+  .stage-hint {
+    margin: 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+  }
+
+  .artwork-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+    padding-top: clamp(2rem, 5vw, 3.5rem);
   }
 
   .artwork-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    margin: 0 0 0.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    font-weight: 300;
+    margin: 0 0 1rem;
   }
 
-  .year {
-    font-size: 0.85rem;
-    color: #666;
-    margin-inline-end: 1rem;
-  }
-
-  .subject-tags {
-    display: inline-flex;
+  .artwork-tags {
+    display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 0.75rem;
+    align-items: center;
+    gap: 0.5rem 1.1rem;
+    margin: 0 0 1.75rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
   }
 
-  .category {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.8;
+  .artwork-tag {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.1rem;
+    transition: color 0.2s, border-color 0.2s;
   }
 
-  .category:hover {
-    opacity: 1;
+  .artwork-tag:hover {
+    color: var(--ink);
+    border-color: var(--ink);
   }
 
-  .info-list {
+  .artwork-text {
+    max-width: 58ch;
+    color: var(--ink-soft);
+  }
+
+  .artwork-text :global(p) {
+    margin: 0 0 1rem;
+  }
+
+  .artwork-specs {
+    margin: 2.25rem 0 0;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .spec {
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.25rem 2rem;
-    margin: 1.5rem 0;
-    font-size: 0.95rem;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line-soft);
   }
 
-  .info-list dt {
-    font-weight: 500;
-    color: #666;
-  }
-
-  .info-list dd {
-    margin: 0;
-  }
-
-  .info-list .price {
-    font-size: 1.1rem;
+  .spec dt {
+    font-size: 0.78rem;
     font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    padding-top: 0.2rem;
+  }
+
+  .spec dd {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .spec-price {
+    font-family: var(--font-display);
+    font-size: 1.5rem !important;
   }
 
   .availability {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-  }
-
-  .availability.available {
-    color: #2d7a3e;
-  }
-
-  .availability.sold {
-    color: #c53030;
+    gap: 0.55rem;
   }
 
   .availability-dot {
@@ -222,66 +305,40 @@ const roomSrc = `${basePath}images/living-room.jpg`;
   }
 
   .availability.available .availability-dot {
-    background: #2d7a3e;
+    background: #4a7c59;
   }
 
   .availability.sold .availability-dot {
-    background: #c53030;
+    background: #a8503f;
   }
 
-  .contact-btn {
-    display: inline-block;
-    margin: 1.5rem 0;
-    padding: 0.75rem 1.5rem;
-    background: #111;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-
-  .contact-btn:hover {
-    opacity: 0.85;
-  }
-
-  .content {
-    margin-top: 1.5rem;
-    line-height: 1.7;
-    color: #444;
-  }
-
-  .content :global(p) {
-    margin-bottom: 1rem;
-  }
-
-  .preview-comparison {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    align-items: stretch;
-  }
-
-  .preview-item {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
+  .artwork-buy {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 2rem;
   }
 
-  .preview-item .room-scene,
-  .preview-item .original-wrap {
-    width: 100%;
+  .artwork-buy-note {
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
   }
 
-  .preview-item h2 {
-    font-size: 0.9rem;
+  .room-title {
+    font-size: 0.78rem;
+    font-family: var(--font-body);
     font-weight: 600;
-    letter-spacing: 0.1em;
-    margin-bottom: 1rem;
-    color: #666;
+    letter-spacing: 0.18em;
+    color: var(--ink-mute);
+    margin: 0 0 1rem;
+  }
+
+  .room-note {
+    margin: 0.85rem 0 0;
+    font-size: 0.8rem;
+    color: var(--ink-mute);
   }
 
   #drift-zoom-root {
@@ -295,22 +352,6 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     pointer-events: none;
   }
 
-  .original-wrap {
-    background: #f8f6f2;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    display: block;
-  }
-
-  .original-wrap img {
-    width: 100%;
-    height: auto;
-    display: block;
-    cursor: zoom-in;
-    vertical-align: top;
-  }
-
   :global(.drift-zoom-pane.drift-inline) {
     width: 400px !important;
     height: 400px !important;
@@ -322,21 +363,18 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     direction: ltr;
   }
 
-  /* Unified coordinates – frame on wall only, above sofa */
   .room-scene {
     position: relative;
     width: 100%;
     aspect-ratio: 4/3;
-    max-height: 400px;
     background-size: 200%;
     background-position: center 5%;
     background-repeat: no-repeat;
-    border-radius: 8px;
     overflow: hidden;
     direction: ltr;
   }
 
-  .frame {
+  .room-frame {
     position: absolute;
     top: 6%;
     left: 50%;
@@ -357,7 +395,7 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     direction: ltr;
   }
 
-  .frame img {
+  .room-frame img {
     width: 100%;
     height: 100%;
     min-height: 0;
@@ -366,42 +404,76 @@ const roomSrc = `${basePath}images/living-room.jpg`;
     display: block;
   }
 
-  @media (max-width: 640px) {
-    .artwork {
-      padding: 1rem 1rem 2rem;
-      display: flex;
-      flex-direction: column;
+  .artwork-more {
+    padding-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  .more-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .more-list {
+    list-style: none;
+    margin: clamp(1.75rem, 4vw, 2.5rem) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+
+  .more-image {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--paper-deep);
+  }
+
+  .more-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .more-list a:hover .more-image img {
+    transform: scale(1.05);
+  }
+
+  .more-title {
+    display: block;
+    padding-top: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+  }
+
+  .more-list a:hover .more-title {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  @media (max-width: 900px) {
+    .artwork-body {
+      grid-template-columns: 1fr;
     }
 
-    .back-btn {
-      order: 0;
-      padding: 0.6rem 0.3rem 0.6rem 0;
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
+    .artwork-room {
+      max-width: 520px;
     }
 
-    .details {
-      order: 1;
-      padding-bottom: 1.5rem;
+    .stage-hint {
+      display: none;
     }
+  }
 
-    .preview-comparison {
-      order: 2;
-      flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .preview-item:first-child h2 {
-      margin-bottom: 0.75rem;
-    }
-
-    .back-btn-bottom {
-      order: 3;
-    }
-
-    .room-scene {
-      border-radius: 0;
+  @media (max-width: 520px) {
+    .spec {
+      grid-template-columns: 5.5rem minmax(0, 1fr);
     }
   }
 </style>

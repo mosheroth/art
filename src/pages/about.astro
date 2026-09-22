@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { COPY, PORTRAIT_SLUG, SITE } from '../lib/site';
+import { allArtworks, curatedArtworks, heTitle } from '../lib/artworks';
+import { img, url, artworkUrl } from '../lib/paths';
+
+const artworks = await allArtworks();
+const portrait = artworks.find((artwork) => artwork.slug === PORTRAIT_SLUG) ?? artworks[0];
+const strip = await curatedArtworks(
+  ['sargent-stream-shadow', 'tel-aviv-ibn-gabirol-59', 'sea-after-storm'],
+  3,
+  [portrait.slug]
+);
+---
+
+<BaseLayout title={`על האמן | ${SITE.name}`} description="משה רוט — צבעי מים מהוד השרון, הירקון ותל אביב.">
+  <article class="about">
+    <header class="shell about-head">
+      <span class="eyebrow">{SITE.discipline} · {SITE.location}</span>
+      <h1 class="display-xl">{COPY.aboutTitle}</h1>
+      <p class="lead about-lead">{COPY.aboutLead}</p>
+    </header>
+
+    <div class="shell about-body">
+      <div class="about-text">
+        {COPY.aboutBody.map((paragraph) => <p>{paragraph}</p>)}
+        <p class="about-signature">{SITE.name}</p>
+      </div>
+
+      <figure class="about-portrait">
+        <img src={img(portrait.data.image)} alt={heTitle(portrait)} loading="lazy" />
+        <figcaption>{heTitle(portrait)} — צבעי מים על נייר</figcaption>
+      </figure>
+    </div>
+
+    <section class="shell about-practice">
+      <h2 class="display-lg">{COPY.aboutPracticeTitle}</h2>
+      <dl>
+        {COPY.aboutPractice.map((item) => (
+          <div class="practice-row">
+            <dt>{item.label}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <ul class="about-strip">
+      {strip.map((artwork) => (
+        <li>
+          <a href={artworkUrl(artwork.slug)}>
+            <img src={img(artwork.data.image)} alt={heTitle(artwork)} loading="lazy" />
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="shell about-cta">
+      <a href={url('gallery')} class="btn btn-solid">לכל העבודות</a>
+      <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="link-underline">
+        {SITE.instagramHandle}
+      </a>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about-head {
+    padding-block: clamp(3rem, 7vw, 6rem) clamp(2rem, 4vw, 3rem);
+    max-width: 22ch;
+  }
+
+  .about-head :global(.display-xl) {
+    margin-bottom: 1.5rem;
+  }
+
+  .about-lead {
+    margin: 0;
+    max-width: 44ch;
+  }
+
+  .about-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .about-text p {
+    margin: 0 0 1.4rem;
+    max-width: 62ch;
+    color: var(--ink-soft);
+  }
+
+  .about-signature {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--ink) !important;
+    margin-top: 2rem !important;
+  }
+
+  .about-portrait {
+    margin: 0;
+    padding: 1rem 1rem 0;
+    background: var(--paper-white);
+    box-shadow: 0 18px 45px -30px rgba(23, 20, 15, 0.5);
+  }
+
+  .about-portrait figcaption {
+    padding: 0.9rem 0.2rem 1rem;
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+    text-align: center;
+  }
+
+  .about-practice {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .about-practice dl {
+    margin: clamp(1.75rem, 4vw, 2.75rem) 0 0;
+  }
+
+  .practice-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr);
+    gap: 1rem 2rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .practice-row dt {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--ink-mute);
+    padding-top: 0.45rem;
+  }
+
+  .practice-row dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+    font-weight: 300;
+  }
+
+  .about-strip {
+    list-style: none;
+    margin: clamp(2rem, 5vw, 3.5rem) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .about-strip a {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .about-strip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .about-strip a:hover img {
+    transform: scale(1.05);
+  }
+
+  .about-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem 2.5rem;
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  @media (max-width: 880px) {
+    .about-head {
+      max-width: none;
+    }
+
+    .about-body {
+      grid-template-columns: 1fr;
+    }
+
+    .about-portrait {
+      max-width: 340px;
+    }
+
+    .practice-row {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+
+    .practice-row dt {
+      padding-top: 0;
+    }
+  }
+</style>

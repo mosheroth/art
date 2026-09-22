@@ -1,82 +1,144 @@
 ---
-const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
-const basePath = base ? `${base}/` : '/';
+import { SITE } from '../lib/site';
+import { url } from '../lib/paths';
+
+const columns = [
+  {
+    title: 'באתר',
+    links: [
+      { href: url(''), label: 'בית' },
+      { href: url('gallery'), label: 'עבודות' },
+      { href: url('about'), label: 'על האמן' },
+    ],
+  },
+  {
+    title: 'רכישה',
+    links: [
+      { href: `${url('gallery')}?status=available`, label: 'ציורים זמינים' },
+      { href: url('passe-partout'), label: 'כלי פספרטו' },
+    ],
+  },
+];
 ---
 
 <footer class="footer">
-  <div class="footer-inner">
-    <p class="footer-name">משה רוט</p>
-    <nav class="footer-nav">
-      <a href="https://www.instagram.com/mosheroth85/" target="_blank" rel="noopener noreferrer">אינסטגרם</a>
-    </nav>
-    <p class="footer-copy">© {new Date().getFullYear()}</p>
+  <div class="shell footer-inner">
+    <div class="footer-brand">
+      <p class="footer-name">{SITE.name}</p>
+      <p class="footer-tagline">{SITE.discipline} · {SITE.location}</p>
+      <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="footer-handle">
+        {SITE.instagramHandle}
+      </a>
+    </div>
+
+    <div class="footer-cols">
+      {columns.map((col) => (
+        <nav class="footer-col" aria-label={col.title}>
+          <p class="footer-col-title">{col.title}</p>
+          <ul>
+            {col.links.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+  </div>
+
+  <div class="shell footer-base">
+    <span>© {new Date().getFullYear()} {SITE.name}</span>
+    <span>כל הציורים הם מקור על נייר</span>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: #111;
-    color: #fff;
-    margin-top: 4rem;
-    padding: 4rem 1.5rem;
+    background: var(--paper-deep);
+    border-top: 1px solid var(--line-soft);
+    padding-block: clamp(3.5rem, 7vw, 6rem) 2rem;
+    margin-top: clamp(4rem, 8vw, 7rem);
   }
 
   .footer-inner {
-    max-width: 1000px;
-    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 2rem;
+    gap: 3rem;
   }
 
   .footer-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 4vw, 2.75rem);
+    font-weight: 300;
+    margin: 0 0 0.4rem;
   }
 
-  .footer-nav {
+  .footer-tagline {
+    margin: 0 0 1.25rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+  }
+
+  .footer-handle {
+    font-size: 1rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.15rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .footer-handle:hover {
+    border-color: var(--ink);
+  }
+
+  .footer-cols {
     display: flex;
-    align-items: center;
-    gap: 2rem;
+    flex-wrap: wrap;
+    gap: 3.5rem;
   }
 
-  .footer-nav a {
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    opacity: 0.9;
-    transition: opacity 0.2s;
-  }
-
-  .footer-nav a:hover {
-    opacity: 1;
-  }
-
-  .footer-copy {
+  .footer-col-title {
+    margin: 0 0 0.9rem;
     font-size: 0.75rem;
-    opacity: 0.7;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+  }
+
+  .footer-col ul {
+    list-style: none;
     margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .footer-col a {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    transition: color 0.2s ease;
+  }
+
+  .footer-col a:hover {
+    color: var(--ink);
+  }
+
+  .footer-base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-soft);
+    font-size: 0.85rem;
+    color: var(--ink-mute);
   }
 
   @media (max-width: 640px) {
-    .footer {
-      padding: 3rem 1.5rem;
-    }
-
-    .footer-inner {
-      flex-direction: column;
-      text-align: center;
-      gap: 1.5rem;
-    }
-
-    .footer-nav {
-      flex-wrap: wrap;
-      justify-content: center;
+    .footer-cols {
+      gap: 2.5rem;
     }
   }
 </style>
