@@ -17,6 +17,12 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = ''
 ---
 
 <div class="filter-bar" id="filter-bar">
+  <button type="button" class="filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="filter-rows">
+    <span>סינון ומיון</span>
+    <span class="filter-toggle-count" id="filter-count" hidden></span>
+  </button>
+
+  <div class="filter-rows" id="filter-rows">
   <div class="filter-row">
     <span class="filter-label">נושא:</span>
     <div class="filter-tags-wrap">
@@ -85,6 +91,7 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = ''
       ))}
     </div>
   </div>
+  </div>
 </div>
 
 <style>
@@ -98,6 +105,47 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = ''
     background: rgba(247, 245, 241, 0.94);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line-soft);
+  }
+
+  .filter-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.55rem 0;
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .filter-toggle::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-inline-end: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    margin-bottom: 4px;
+    transition: transform 0.25s ease;
+  }
+
+  .filter-toggle[aria-expanded='true']::after {
+    transform: rotate(-135deg);
+    margin-bottom: -2px;
+  }
+
+  .filter-toggle-count {
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
   }
 
   .filter-row {
@@ -231,7 +279,21 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = ''
 
   @media (max-width: 768px) {
     .filter-bar {
-      padding: 0.75rem var(--gutter) 0.6rem;
+      padding: 0.35rem var(--gutter) 0.5rem;
+    }
+
+    .filter-toggle {
+      display: flex;
+    }
+
+    /* Keeps the sticky bar to one line on phones until filters are needed */
+    .filter-rows {
+      display: none;
+      padding-top: 0.6rem;
+    }
+
+    .filter-rows.is-open {
+      display: block;
     }
 
     .filter-tag {
@@ -332,11 +394,28 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = ''
     });
   }
 
+  function updateCount() {
+    const badge = document.getElementById('filter-count');
+    if (!badge) return;
+    const { price, status, subject, sort } = getParams();
+    const active = [price, status, subject, sort].filter(Boolean).length;
+    badge.textContent = String(active);
+    badge.hidden = active === 0;
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     const bar = document.getElementById('filter-bar');
+    const toggle = document.getElementById('filter-toggle');
+    const rows = document.getElementById('filter-rows');
     const { price, status, subject, sort } = getParams();
 
+    toggle?.addEventListener('click', () => {
+      const open = rows?.classList.toggle('is-open') ?? false;
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+
     applyFilters(price, status, subject);
+    updateCount();
     setActiveButton('price', price);
     setActiveButton('status', status);
     setActiveButton('subject', subject);
@@ -360,6 +439,7 @@ const { activePrice = '', activeStatus = '', activeSubject = '', activeSort = ''
     bar?.addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest('.filter-tag');
       if (!btn) return;
+      setTimeout(updateCount, 0);
 
       const type = (btn.closest('[data-filter-type]') as HTMLElement)?.dataset.filterType;
       const value = (btn as HTMLElement).dataset.value || '';

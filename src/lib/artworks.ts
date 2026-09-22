@@ -7,6 +7,19 @@ export function heTitle(artwork: Artwork): string {
   return artwork.data.titleHe ?? artwork.data.title;
 }
 
+const MEDIUM_HE: Record<string, string> = {
+  'watercolor on paper': 'צבעי מים על נייר',
+  'watercolor': 'צבעי מים',
+  'gouache on paper': 'גואש על נייר',
+};
+
+/** Artwork files carry either English or Hebrew mediums; the site only shows Hebrew. */
+export function mediumHe(artwork: Artwork): string | undefined {
+  const medium = artwork.data.medium?.trim();
+  if (!medium) return undefined;
+  return MEDIUM_HE[medium.toLowerCase()] ?? medium;
+}
+
 /** Subject labels of an artwork, in Hebrew, ready to print. */
 export function subjectLabels(artwork: Artwork): string[] {
   const subjects = artwork.data.subjects ?? [];

@@ -9,11 +9,13 @@ interface Props {
 const { transparent = false } = Astro.props;
 
 const navLinks = [
-  { href: url(''), label: 'בית' },
-  { href: url('gallery'), label: 'עבודות' },
-  { href: url('about'), label: 'על האמן' },
-  { href: `${url('gallery')}?status=available`, label: 'למכירה' },
+  { href: url(''), label: 'בית', match: '' },
+  { href: url('gallery'), label: 'עבודות', match: 'gallery' },
+  { href: url('about'), label: 'על האמן', match: 'about' },
+  { href: `${url('gallery')}?status=available`, label: 'למכירה', match: null },
 ];
+
+const current = Astro.url.pathname.replace(url(''), '').replace(/\/$/, '');
 ---
 
 <header class:list={['header', transparent && 'header-transparent']} id="site-header">
@@ -27,7 +29,13 @@ const navLinks = [
       <ul class="nav-list">
         {navLinks.map((link) => (
           <li>
-            <a href={link.href} class="nav-link">{link.label}</a>
+            <a
+              href={link.href}
+              class="nav-link"
+              aria-current={link.match !== null && link.match === current ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
           </li>
         ))}
         <li class="nav-social">
@@ -148,11 +156,13 @@ const navLinks = [
     transition: transform 0.25s ease;
   }
 
-  .nav-link:hover {
+  .nav-link:hover,
+  .nav-link[aria-current='page'] {
     color: var(--ink);
   }
 
-  .nav-link:hover::after {
+  .nav-link:hover::after,
+  .nav-link[aria-current='page']::after {
     transform: scaleX(1);
   }
 
@@ -222,11 +232,18 @@ const navLinks = [
     .nav {
       position: fixed;
       inset: 0;
+      z-index: 1;
       background: var(--paper);
       padding: calc(var(--header-h) + 3rem) var(--gutter) 3rem;
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .logo,
+    .header-end {
+      position: relative;
+      z-index: 2;
     }
 
     .nav.is-open {

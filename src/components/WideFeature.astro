@@ -1,14 +1,14 @@
 ---
 import { COPY } from '../lib/site';
 import { img, artworkUrl } from '../lib/paths';
-import { heTitle, type Artwork } from '../lib/artworks';
+import { heTitle, mediumHe, type Artwork } from '../lib/artworks';
 
 interface Props {
   artwork: Artwork;
 }
 
 const { artwork } = Astro.props;
-const meta = [artwork.data.medium, artwork.data.year].filter(Boolean).join(' · ');
+const meta = [mediumHe(artwork), artwork.data.year].filter(Boolean).join(' · ');
 ---
 
 <section class="feature">

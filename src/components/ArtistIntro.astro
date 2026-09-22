@@ -2,6 +2,7 @@
 import { COPY } from '../lib/site';
 import { img, url } from '../lib/paths';
 import { heTitle, type Artwork } from '../lib/artworks';
+import { imageSize } from '../lib/imageSize';
 
 interface Props {
   portrait: Artwork;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const { portrait, worksCount } = Astro.props;
+const portraitSize = imageSize(portrait.data.image);
 const facts = ['צבעי מים וגואש על נייר', 'ציור בשטח, בישיבה אחת', `${worksCount} עבודות באתר`];
 ---
 
@@ -17,7 +19,13 @@ const facts = ['צבעי מים וגואש על נייר', 'ציור בשטח, �
     <div class="intro-visual">
       <figure class="portrait">
         <span class="tape" aria-hidden="true"></span>
-        <img src={img(portrait.data.image)} alt={heTitle(portrait)} loading="lazy" />
+        <img
+          src={img(portrait.data.image)}
+          alt={heTitle(portrait)}
+          width={portraitSize?.width}
+          height={portraitSize?.height}
+          loading="lazy"
+        />
         <figcaption>{heTitle(portrait)} — צבעי מים על נייר</figcaption>
       </figure>
     </div>

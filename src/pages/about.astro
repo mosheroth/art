@@ -2,10 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COPY, PORTRAIT_SLUG, SITE } from '../lib/site';
 import { allArtworks, curatedArtworks, heTitle } from '../lib/artworks';
+import { imageSize } from '../lib/imageSize';
 import { img, url, artworkUrl } from '../lib/paths';
 
 const artworks = await allArtworks();
 const portrait = artworks.find((artwork) => artwork.slug === PORTRAIT_SLUG) ?? artworks[0];
+const portraitSize = imageSize(portrait.data.image);
 const strip = await curatedArtworks(
   ['sargent-stream-shadow', 'tel-aviv-ibn-gabirol-59', 'sea-after-storm'],
   3,
@@ -16,9 +18,11 @@ const strip = await curatedArtworks(
 <BaseLayout title={`על האמן | ${SITE.name}`} description="משה רוט — צבעי מים מהוד השרון, הירקון ותל אביב.">
   <article class="about">
     <header class="shell about-head">
-      <span class="eyebrow">{SITE.discipline} · {SITE.location}</span>
-      <h1 class="display-xl">{COPY.aboutTitle}</h1>
-      <p class="lead about-lead">{COPY.aboutLead}</p>
+      <div class="about-head-inner">
+        <span class="eyebrow">{SITE.discipline} · {SITE.location}</span>
+        <h1 class="display-xl about-title">{COPY.aboutTitle}</h1>
+        <p class="lead about-lead">{COPY.aboutLead}</p>
+      </div>
     </header>
 
     <div class="shell about-body">
@@ -28,7 +32,13 @@ const strip = await curatedArtworks(
       </div>
 
       <figure class="about-portrait">
-        <img src={img(portrait.data.image)} alt={heTitle(portrait)} loading="lazy" />
+        <img
+          src={img(portrait.data.image)}
+          alt={heTitle(portrait)}
+          width={portraitSize?.width}
+          height={portraitSize?.height}
+          loading="lazy"
+        />
         <figcaption>{heTitle(portrait)} — צבעי מים על נייר</figcaption>
       </figure>
     </div>
@@ -67,16 +77,20 @@ const strip = await curatedArtworks(
 <style>
   .about-head {
     padding-block: clamp(3rem, 7vw, 6rem) clamp(2rem, 4vw, 3rem);
-    max-width: 22ch;
   }
 
-  .about-head :global(.display-xl) {
+  .about-head-inner {
+    max-width: 52ch;
+  }
+
+  .about-title {
+    max-width: 14ch;
     margin-bottom: 1.5rem;
   }
 
   .about-lead {
     margin: 0;
-    max-width: 44ch;
+    max-width: 46ch;
   }
 
   .about-body {
@@ -181,10 +195,6 @@ const strip = await curatedArtworks(
   }
 
   @media (max-width: 880px) {
-    .about-head {
-      max-width: none;
-    }
-
     .about-body {
       grid-template-columns: 1fr;
     }

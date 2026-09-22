@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { getCategoryLabel } from '../../lib/categories';
 import { SITE } from '../../lib/site';
+import { mediumHe } from '../../lib/artworks';
+import { imageSize } from '../../lib/imageSize';
 import { img, url, artworkUrl } from '../../lib/paths';
 
 export async function getStaticPaths() {
@@ -20,6 +22,7 @@ const title = artwork.data.titleHe ?? artwork.data.title;
 const subjectSlugs = Array.isArray(artwork.data.subjects) ? artwork.data.subjects : [];
 const imgSrc = img(artwork.data.image);
 const roomSrc = img('images/living-room.jpg');
+const size = imageSize(artwork.data.image);
 
 const others = artworks
   .filter((entry) => entry.slug !== artwork.slug)
@@ -47,7 +50,14 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
     <figure class="artwork-stage">
       <div class="stage-wash" style={`background-image: url('${imgSrc}')`} aria-hidden="true"></div>
       <div class="stage-frame" dir="ltr">
-        <img src={imgSrc} alt={title} id="original-image" data-zoom={imgSrc} />
+        <img
+          src={imgSrc}
+          alt={title}
+          id="original-image"
+          data-zoom={imgSrc}
+          width={size?.width}
+          height={size?.height}
+        />
       </div>
       <figcaption class="stage-hint">העבירו את העכבר על הציור להגדלה</figcaption>
     </figure>
@@ -68,10 +78,10 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
         </div>
 
         <dl class="artwork-specs">
-          {artwork.data.medium && (
+          {mediumHe(artwork) && (
             <div class="spec">
               <dt>מדיום</dt>
-              <dd>{artwork.data.medium}</dd>
+              <dd>{mediumHe(artwork)}</dd>
             </div>
           )}
           {artwork.data.price && (
@@ -177,8 +187,9 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
     z-index: -2;
     background-size: cover;
     background-position: center;
-    filter: blur(90px) saturate(120%);
-    opacity: 0.45;
+    filter: blur(80px) saturate(170%);
+    opacity: 0.7;
+    mask-image: linear-gradient(to bottom, transparent 12%, #000 34%, #000 62%, transparent 88%);
   }
 
   .artwork-stage::after {

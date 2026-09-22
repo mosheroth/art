@@ -2,6 +2,7 @@
 import { COPY } from '../lib/site';
 import { img, url, artworkUrl } from '../lib/paths';
 import { heTitle, subjectLabels, type Artwork } from '../lib/artworks';
+import { imageSize } from '../lib/imageSize';
 
 interface Props {
   artworks: Artwork[];
@@ -26,11 +27,19 @@ const { artworks } = Astro.props;
     <div class="works-columns">
       {artworks.map((artwork) => {
         const subjects = subjectLabels(artwork);
+        const size = imageSize(artwork.data.image);
         return (
           <figure class="work">
             <a href={artworkUrl(artwork.slug)} class="work-link">
               <span class="work-mat">
-                <img src={img(artwork.data.image)} alt={heTitle(artwork)} loading="lazy" decoding="async" />
+                <img
+                  src={img(artwork.data.image)}
+                  alt={heTitle(artwork)}
+                  width={size?.width}
+                  height={size?.height}
+                  loading="lazy"
+                  decoding="async"
+                />
               </span>
               <figcaption class="work-caption">
                 <span class="work-title">{heTitle(artwork)}</span>

@@ -3,32 +3,35 @@ import { COPY, SITE } from '../lib/site';
 ---
 
 <section class="contact section" id="contact">
-  <div class="shell contact-inner">
-    <span class="eyebrow">{COPY.contactEyebrow}</span>
-    <h2 class="display-xl contact-title">{COPY.contactTitle}</h2>
-    <p class="lead contact-body">{COPY.contactBody}</p>
-    <div class="contact-actions">
-      <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-solid">
-        {COPY.contactCta}
-        <span class="contact-handle">{SITE.instagramHandle}</span>
-      </a>
-      <span class="contact-place">{SITE.discipline} · {SITE.location}</span>
+  <div class="shell">
+    <div class="contact-inner">
+      <span class="eyebrow">{COPY.contactEyebrow}</span>
+      <h2 class="display-xl contact-title">{COPY.contactTitle}</h2>
+      <p class="lead contact-body">{COPY.contactBody}</p>
+      <div class="contact-actions">
+        <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-solid">
+          {COPY.contactCta}
+          <span class="contact-handle">{SITE.instagramHandle}</span>
+        </a>
+        <span class="contact-place">{SITE.discipline} · {SITE.location}</span>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .contact-inner {
-    max-width: 30ch;
+    max-width: 52ch;
   }
 
   .contact-title {
     margin: 0 0 1.5rem;
+    max-width: 14ch;
   }
 
   .contact-body {
     margin: 0 0 2.5rem;
-    max-width: 44ch;
+    max-width: 46ch;
   }
 
   .contact-actions {
