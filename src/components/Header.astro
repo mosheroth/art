@@ -1,6 +1,7 @@
 ---
 import { SITE } from '../lib/site';
 import { url } from '../lib/paths';
+import ToneToggle from './ToneToggle.astro';
 
 interface Props {
   transparent?: boolean;
@@ -43,10 +44,15 @@ const current = Astro.url.pathname.replace(url(''), '').replace(/\/$/, '');
             אינסטגרם
           </a>
         </li>
+        <li class="nav-tone">
+          <span class="nav-tone-label">גוון</span>
+          <ToneToggle />
+        </li>
       </ul>
     </nav>
 
     <div class="header-end">
+      <ToneToggle class="header-tone" />
       <a
         href={SITE.instagram}
         target="_blank"
@@ -85,7 +91,7 @@ const current = Astro.url.pathname.replace(url(''), '').replace(/\/$/, '');
   }
 
   .header-transparent.is-stuck {
-    background: rgba(247, 245, 241, 0.88);
+    background: rgba(var(--paper-rgb), 0.88);
     backdrop-filter: blur(12px);
     border-bottom-color: var(--line-soft);
   }
@@ -130,7 +136,8 @@ const current = Astro.url.pathname.replace(url(''), '').replace(/\/$/, '');
     padding: 0;
   }
 
-  .nav-social {
+  .nav-social,
+  .nav-tone {
     display: none;
   }
 
@@ -221,7 +228,8 @@ const current = Astro.url.pathname.replace(url(''), '').replace(/\/$/, '');
       display: none;
     }
 
-    .instagram {
+    .instagram,
+    .header-tone {
       display: none;
     }
 
@@ -259,6 +267,19 @@ const current = Astro.url.pathname.replace(url(''), '').replace(/\/$/, '');
 
     .nav-social {
       display: block;
+    }
+
+    .nav-tone {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .nav-tone-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.16em;
+      color: var(--ink-mute);
     }
 
     .nav-link {

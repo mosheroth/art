@@ -1,3 +1,15 @@
+/**
+ * Which palette the site opens with. `sepia` maps every painting through the
+ * artist's own sepia wash tones; `color` shows the paintings as photographed.
+ * Visitors can switch with the toggle in the header, and the choice is remembered.
+ */
+export const DEFAULT_TONE: 'color' | 'sepia' = 'sepia';
+
+export const TONES = [
+  { value: 'color', label: 'צבע' },
+  { value: 'sepia', label: 'ספיה' },
+] as const;
+
 export const SITE = {
   name: 'משה רוט',
   nameEn: 'Moshe Rot',
@@ -19,8 +31,10 @@ export const PORTRAIT_SLUG = 'profile-portrait';
 /** Curated order for the home page gallery; anything missing falls back to the rest of the collection. */
 export const SELECTED_SLUGS = [
   'sargent-stream-shadow',
+  'sepia-reclining-figure',
   'purple-storm',
   'polina-4',
+  'sepia-seated-figure',
   'flowers-batya-3',
   'figures-in-water',
   'under-the-canopy',

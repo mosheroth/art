@@ -137,7 +137,7 @@ artworks = sortArtworks(artworks, (sort || '') as SortSlug);
   }
 
   .grid-item[data-sold='true'] .grid-frame img {
-    filter: saturate(0.75);
+    filter: var(--art-filter-sold);
   }
 
   .grid-badge {

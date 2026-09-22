@@ -1,7 +1,9 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ToneFilter from '../components/ToneFilter.astro';
 import { url } from '../lib/paths';
+import { DEFAULT_TONE } from '../lib/site';
 
 interface Props {
   title: string;
@@ -14,9 +16,28 @@ const { title, description = 'ציורי צבעי מים מהוד השרון, ה
 ---
 
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he" dir="rtl" data-tone={DEFAULT_TONE}>
   <head>
     <meta charset="utf-8" />
+    <script is:inline define:vars={{ defaultTone: DEFAULT_TONE }}>
+      // Runs before paint so the page never flashes the wrong palette.
+      (() => {
+        const valid = ['color', 'sepia'];
+        const fromUrl = new URLSearchParams(window.location.search).get('tone');
+        let tone = defaultTone;
+        try {
+          const stored = window.localStorage.getItem('tone');
+          if (valid.includes(stored)) tone = stored;
+        } catch {}
+        if (valid.includes(fromUrl)) {
+          tone = fromUrl;
+          try {
+            window.localStorage.setItem('tone', tone);
+          } catch {}
+        }
+        document.documentElement.dataset.tone = tone;
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -34,6 +55,7 @@ const { title, description = 'ציורי צבעי מים מהוד השרון, ה
     <title>{title}</title>
   </head>
   <body>
+    <ToneFilter />
     <Header transparent={transparentHeader} />
     <main>
       <slot />
@@ -53,6 +75,14 @@ const { title, description = 'ציורי צבעי מים מהוד השרון, ה
     --ink-mute: #8b857b;
     --line: rgba(23, 20, 15, 0.14);
     --line-soft: rgba(23, 20, 15, 0.07);
+    --paper-rgb: 247, 245, 241;
+
+    /* Tone hooks: the sepia palette swaps these, everything else follows */
+    --art-filter: none;
+    --art-filter-sold: saturate(0.75);
+    --wash-filter: blur(72px) saturate(180%);
+    --wash-opacity: 0.85;
+    --wash-opacity-stage: 0.7;
 
     --font-display: 'Frank Ruhl Libre', 'Times New Roman', serif;
     --font-body: 'Assistant', system-ui, -apple-system, sans-serif;
@@ -65,10 +95,33 @@ const { title, description = 'ציורי צבעי מים מהוד השרון, ה
     --section-y: clamp(4.5rem, 11vw, 9.5rem);
   }
 
+  /* Sepia: warmer paper, deeper ink, and every painting mapped to the wash tones */
+  html[data-tone='sepia'] {
+    --paper: #f3ece0;
+    --paper-deep: #e9dfce;
+    --paper-white: #faf5eb;
+    --ink: #221a10;
+    --ink-soft: #55452f;
+    --ink-mute: #937f63;
+    --line: rgba(34, 26, 16, 0.16);
+    --line-soft: rgba(34, 26, 16, 0.08);
+    --paper-rgb: 243, 236, 224;
+
+    --art-filter: url('#tone-sepia');
+    --art-filter-sold: url('#tone-sepia');
+    --wash-filter: blur(72px) saturate(120%) url('#tone-sepia');
+    --wash-opacity: 0.6;
+    --wash-opacity-stage: 0.45;
+  }
+
   *,
   *::before,
   *::after {
     box-sizing: border-box;
+  }
+
+  img {
+    filter: var(--art-filter);
   }
 
   html {

@@ -1,0 +1,80 @@
+---
+import { TONES } from '../lib/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['tone-toggle', className]} role="group" aria-label="גוון האתר">
+  {TONES.map((tone) => (
+    <button type="button" class="tone-option" data-tone-value={tone.value} aria-pressed="false">
+      {tone.label}
+    </button>
+  ))}
+</div>
+
+<style>
+  .tone-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper-white);
+  }
+
+  .tone-option {
+    padding: 0.3rem 0.8rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-mute);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  .tone-option:hover {
+    color: var(--ink);
+  }
+
+  .tone-option[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'tone';
+
+  function paint(tone: string) {
+    document.querySelectorAll<HTMLButtonElement>('[data-tone-value]').forEach((btn) => {
+      btn.setAttribute('aria-pressed', String(btn.dataset.toneValue === tone));
+    });
+  }
+
+  function apply(tone: string) {
+    document.documentElement.dataset.tone = tone;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, tone);
+    } catch {
+      /* private mode — the choice just won't stick */
+    }
+    paint(tone);
+  }
+
+  paint(document.documentElement.dataset.tone ?? 'color');
+
+  document.addEventListener('click', (event) => {
+    const btn = (event.target as HTMLElement).closest<HTMLElement>('[data-tone-value]');
+    if (!btn?.dataset.toneValue) return;
+    apply(btn.dataset.toneValue);
+  });
+</script>

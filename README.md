@@ -84,6 +84,14 @@ The interface stays paper and ink so that all colour comes from the paintings. T
 
 The hero and the artwork page both blur the painting behind itself, so each page takes its ambient colour from the work on it.
 
+### Tone: colour or sepia
+
+The site can show the whole collection in the artist's sepia wash tones instead of as photographed. The toggle sits in the header; the choice is kept in `localStorage` and can be forced with `?tone=sepia` or `?tone=color`.
+
+- `DEFAULT_TONE` in `src/lib/site.ts` decides which tone a first-time visitor sees.
+- `src/components/ToneFilter.astro` holds the duotone SVG filter. Its ramp is sampled from the real sepia paintings (`sepia-seated-figure`, `sepia-reclining-figure`), so filtered works land on the same paper and ink values rather than a generic CSS `sepia()`. The `slope`/`intercept` pair before the ramp controls how deep the darks go.
+- `html[data-tone='sepia']` in `BaseLayout.astro` swaps the palette and the `--art-filter`, `--art-filter-sold`, `--wash-filter` hooks. Anything that paints with those tokens follows automatically, so new components need no tone-specific CSS.
+
 Shared helpers:
 
 - `src/lib/paths.ts` — `url()`, `img()`, `artworkUrl()` keep the GitHub Pages `base` prefix correct

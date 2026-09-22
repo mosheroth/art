@@ -180,8 +180,8 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
     z-index: -2;
     background-size: cover;
     background-position: center;
-    filter: blur(80px) saturate(170%);
-    opacity: 0.7;
+    filter: var(--wash-filter);
+    opacity: var(--wash-opacity-stage);
     mask-image: linear-gradient(to bottom, transparent 12%, #000 34%, #000 62%, transparent 88%);
   }
 
@@ -190,7 +190,7 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(to bottom, rgba(247, 245, 241, 0.6), var(--paper));
+    background: linear-gradient(to bottom, rgba(var(--paper-rgb), 0.6), var(--paper));
   }
 
   .stage-frame {
