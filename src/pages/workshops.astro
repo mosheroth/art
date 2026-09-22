@@ -1,33 +1,42 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../lib/site';
+import { url } from '../lib/paths';
 ---
 
-<BaseLayout title="סדנאות | משה רוט" description="סדנאות צבעי מים">
-  <article class="content">
-    <h1>סדנאות</h1>
-    <p>
-      כאן תוכל למצוא מידע על סדנאות צבעי מים. פרטים בקרוב.
+<BaseLayout title={`סדנאות | ${SITE.name}`} description="סדנאות צבעי מים בשטח">
+  <div class="shell">
+  <article class="workshops">
+    <span class="eyebrow">בקרוב</span>
+    <h1 class="display-lg">סדנאות צבעי מים</h1>
+    <p class="lead">
+      ימי ציור בשטח בקבוצות קטנות — בהוד השרון, בירקון ובחוף. הפרטים והמועדים יתפרסמו כאן.
     </p>
+    <div class="workshops-actions">
+      <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-solid">
+        לעדכונים באינסטגרם
+      </a>
+      <a href={url('gallery')} class="link-underline">בינתיים, לעבודות</a>
+    </div>
   </article>
+  </div>
 </BaseLayout>
 
 <style>
-  .content {
-    max-width: 640px;
-    margin: 4rem auto;
-    padding: 0 2rem;
+  .workshops {
+    max-width: 700px;
+    padding-block: clamp(3rem, 8vw, 6rem);
   }
 
-  .content h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    margin-bottom: 2rem;
+  .workshops .lead {
+    margin: 1.5rem 0 0;
   }
 
-  .content p {
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-    color: #444;
+  .workshops-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 2rem;
+    margin-top: 2.5rem;
   }
 </style>

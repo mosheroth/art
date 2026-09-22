@@ -1,0 +1,166 @@
+---
+import { COPY } from '../lib/site';
+import { img, url } from '../lib/paths';
+import { heTitle, type Artwork } from '../lib/artworks';
+import { imageSize } from '../lib/imageSize';
+
+interface Props {
+  portrait: Artwork;
+  worksCount: number;
+}
+
+const { portrait, worksCount } = Astro.props;
+const portraitSize = imageSize(portrait.data.image);
+const facts = ['צבעי מים וגואש על נייר', 'ציור בשטח, בישיבה אחת', `${worksCount} עבודות באתר`];
+---
+
+<section class="intro section" id="artist">
+  <div class="shell intro-inner">
+    <div class="intro-visual">
+      <figure class="portrait">
+        <span class="tape" aria-hidden="true"></span>
+        <img
+          src={img(portrait.data.image)}
+          alt={heTitle(portrait)}
+          width={portraitSize?.width}
+          height={portraitSize?.height}
+          loading="lazy"
+        />
+        <figcaption>{heTitle(portrait)} — צבעי מים על נייר</figcaption>
+      </figure>
+    </div>
+
+    <div class="intro-text">
+      <span class="eyebrow">{COPY.artistEyebrow}</span>
+      <blockquote class="intro-quote">{COPY.artistQuote}</blockquote>
+      {COPY.artistBody.map((paragraph) => <p class="intro-paragraph">{paragraph}</p>)}
+
+      <p class="intro-facts">
+        {facts.map((fact, i) => (
+          <>
+            {i > 0 && <span class="dot" aria-hidden="true">·</span>}
+            <span>{fact}</span>
+          </>
+        ))}
+      </p>
+
+      <div class="intro-foot">
+        <span class="signature">{COPY.artistSignature}</span>
+        <a href={url('about')} class="link-underline">{COPY.artistMore}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+
+  .intro-visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .portrait {
+    position: relative;
+    margin: 0;
+    max-width: 380px;
+    padding: 1rem 1rem 0;
+    background: var(--paper-white);
+    box-shadow: 0 18px 45px -28px rgba(23, 20, 15, 0.5);
+    transform: rotate(-2.2deg);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .portrait:hover {
+    transform: rotate(0deg);
+  }
+
+  /* Bit of masking tape, so the section reads like a studio wall and not a profile card */
+  .tape {
+    position: absolute;
+    top: -14px;
+    inset-inline-start: 50%;
+    transform: translateX(50%) rotate(-3deg);
+    width: 96px;
+    height: 26px;
+    background: rgba(215, 205, 184, 0.55);
+    box-shadow: 0 1px 2px rgba(23, 20, 15, 0.08);
+  }
+
+  .portrait figcaption {
+    padding: 0.9rem 0.2rem 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+    text-align: center;
+  }
+
+  .intro-quote {
+    margin: 0 0 2rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.9vw, 2.6rem);
+    font-weight: 300;
+    line-height: 1.28;
+    text-wrap: balance;
+  }
+
+  .intro-quote::before {
+    content: '״';
+    color: var(--ink-mute);
+  }
+
+  .intro-paragraph {
+    margin: 0 0 1.25rem;
+    max-width: 60ch;
+    color: var(--ink-soft);
+  }
+
+  .intro-facts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.9rem;
+    margin: 2rem 0 0;
+    font-size: 0.88rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-mute);
+  }
+
+  .dot {
+    opacity: 0.6;
+  }
+
+  .intro-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 2.25rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .signature {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 900px) {
+    .intro-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .portrait {
+      max-width: 300px;
+    }
+  }
+</style>

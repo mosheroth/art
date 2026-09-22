@@ -1,0 +1,61 @@
+---
+import { COPY, SITE } from '../lib/site';
+---
+
+<section class="contact section" id="contact">
+  <div class="shell">
+    <div class="contact-inner">
+      <span class="eyebrow">{COPY.contactEyebrow}</span>
+      <h2 class="display-xl contact-title">{COPY.contactTitle}</h2>
+      <p class="lead contact-body">{COPY.contactBody}</p>
+      <div class="contact-actions">
+        <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-solid">
+          {COPY.contactCta}
+          <span class="contact-handle">{SITE.instagramHandle}</span>
+        </a>
+        <span class="contact-place">{SITE.discipline} · {SITE.location}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-inner {
+    max-width: 52ch;
+  }
+
+  .contact-title {
+    margin: 0 0 1.5rem;
+    max-width: 14ch;
+  }
+
+  .contact-body {
+    margin: 0 0 2.5rem;
+    max-width: 46ch;
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 2rem;
+  }
+
+  .contact-handle {
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    opacity: 0.7;
+  }
+
+  .contact-place {
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+  }
+
+  @media (max-width: 720px) {
+    .contact-inner {
+      max-width: none;
+    }
+  }
+</style>

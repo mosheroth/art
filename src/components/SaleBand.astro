@@ -1,0 +1,163 @@
+---
+import { COPY } from '../lib/site';
+import { img, url, artworkUrl } from '../lib/paths';
+import { heTitle, type Artwork } from '../lib/artworks';
+import { parsePrice } from '../lib/categories';
+
+interface Props {
+  available: Artwork[];
+}
+
+const { available } = Astro.props;
+
+const prices = available.map((artwork) => parsePrice(artwork.data.price)).filter((price): price is number => price !== null);
+const minPrice = prices.length ? Math.min(...prices) : null;
+const thumbs = available.slice(0, 4);
+---
+
+<section class="sale section" id="purchase">
+  <div class="shell sale-inner">
+    <div class="sale-text">
+      <span class="eyebrow">{COPY.saleEyebrow}</span>
+      <h2 class="sale-title">{COPY.saleTitle}</h2>
+      <p class="sale-body">{COPY.saleBody}</p>
+
+      <div class="sale-actions">
+        <a href={url('gallery')} class="btn">{COPY.saleCta}</a>
+        {minPrice !== null && (
+          <span class="sale-from">
+            <span class="sale-from-label">מ־</span>
+            <span class="sale-from-price">₪{minPrice}</span>
+          </span>
+        )}
+      </div>
+
+      <p class="sale-note">{COPY.saleNote}</p>
+    </div>
+
+    <ul class="sale-thumbs">
+      {thumbs.map((artwork) => (
+        <li>
+          <a href={artworkUrl(artwork.slug)} title={heTitle(artwork)}>
+            <img src={img(artwork.data.image)} alt={heTitle(artwork)} loading="lazy" decoding="async" />
+            {artwork.data.price && <span class="sale-thumb-price">{artwork.data.price}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .sale {
+    background: var(--paper-deep);
+    border-block: 1px solid var(--line-soft);
+  }
+
+  .sale-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .sale-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 300;
+    margin: 0 0 1.25rem;
+  }
+
+  .sale-body {
+    margin: 0;
+    max-width: 52ch;
+    color: var(--ink-soft);
+  }
+
+  .sale-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin-top: 2rem;
+  }
+
+  .sale-from {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    color: var(--ink-soft);
+  }
+
+  .sale-from-label {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  .sale-from-price {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+  }
+
+  .sale-note {
+    margin: 1.5rem 0 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+  }
+
+  .sale-thumbs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(0.75rem, 1.6vw, 1.25rem);
+  }
+
+  .sale-thumbs a {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--paper-white);
+  }
+
+  .sale-thumbs img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sale-thumbs a:hover img {
+    transform: scale(1.04);
+  }
+
+  .sale-thumb-price {
+    position: absolute;
+    inset-inline-start: 0.6rem;
+    bottom: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    background: rgba(253, 252, 250, 0.9);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 880px) {
+    .sale-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .sale-thumbs {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .sale-thumbs {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

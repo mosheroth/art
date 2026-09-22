@@ -1,6 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
-import { filterArtworks, getPriceCategory, parsePrice, type PriceSlug, type StatusSlug } from '../lib/categories';
+import {
+  SUBJECT_CATEGORIES,
+  filterArtworks,
+  getPriceCategory,
+  parsePrice,
+  type PriceSlug,
+  type StatusSlug,
+} from '../lib/categories';
 
 type SortSlug = 'price-asc' | 'price-desc' | '';
 
@@ -15,6 +22,7 @@ interface Props {
 const { price = '', status = '', sort = '', limit, clientFilter = false } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') || '';
 const basePath = base ? `${base}/` : '/';
+const SUBJECT_LABELS = new Map(SUBJECT_CATEGORIES.map((cat) => [cat.slug as string, cat.label as string]));
 
 function shuffleArray<T>(arr: T[]): T[] {
   const out = [...arr];
@@ -56,34 +64,36 @@ artworks = sortArtworks(artworks, (sort || '') as SortSlug);
     const priceNum = parsePrice(artwork.data.price);
     const isDonation = artwork.data.category === 'donation';
     const isSold = artwork.data.sold ?? false;
-    const subjects = (artwork.data.subjects ?? []).join(',');
+    const subjectSlugs = artwork.data.subjects ?? [];
+    const subjects = subjectSlugs.join(',');
+    const subjectText = subjectSlugs
+      .map((slug) => SUBJECT_LABELS.get(slug))
+      .filter(Boolean)
+      .join(', ');
     const artworkHref = `${basePath}artwork/${artwork.slug}`;
     return (
-      <div
+      <a
         class="grid-item"
+        href={artworkHref}
         data-price-cat={priceCat || undefined}
         data-price={priceNum ?? undefined}
         data-slug={artwork.slug}
         data-donation={isDonation ? 'true' : undefined}
         data-sold={isSold ? 'true' : 'false'}
         data-subjects={subjects || undefined}
-        data-artwork-overlay
       >
-        <img
-          src={imgSrc}
-          alt={artwork.data.title}
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="overlay">
-          <span class="overlay-title">{artwork.data.titleHe ?? artwork.data.title}</span>
-          {artwork.data.price && <span class="overlay-price">{artwork.data.price}</span>}
-          <span class="overlay-status">{isSold ? 'נמכר' : 'זמין'}</span>
-          <a href={artworkHref} class="overlay-btn">
-            פרטים
-          </a>
-        </div>
-      </div>
+        <span class="grid-frame">
+          <img src={imgSrc} alt={artwork.data.title} loading="lazy" decoding="async" />
+          {isSold && <span class="grid-badge">נמכר</span>}
+        </span>
+        <span class="grid-caption">
+          <span class="grid-title">{artwork.data.titleHe ?? artwork.data.title}</span>
+          <span class="grid-meta">
+            {subjectText}
+          </span>
+          {artwork.data.price && <span class="grid-price">{artwork.data.price}</span>}
+        </span>
+      </a>
     );
   })}
 </div>
@@ -91,137 +101,107 @@ artworks = sortArtworks(artworks, (sort || '') as SortSlug);
 
 <style>
   .grid-wrapper {
-    max-width: 1000px;
+    max-width: var(--page);
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem) var(--gutter) 0;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.75rem) clamp(1.25rem, 2.5vw, 2rem);
     width: 100%;
   }
 
   .grid-item {
-    aspect-ratio: 1;
-    overflow: hidden;
     display: block;
-    position: relative;
   }
 
-  .grid-item img {
+  .grid-frame {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--paper-deep);
+  }
+
+  .grid-frame img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
   }
 
-  .grid-item:hover img {
-    transform: scale(1.03);
+  .grid-item:hover .grid-frame img {
+    transform: scale(1.04);
   }
 
-  .overlay {
+  .grid-item[data-sold='true'] .grid-frame img {
+    filter: saturate(0.75);
+  }
+
+  .grid-badge {
     position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 1rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition:
-      opacity 0.35s ease,
-      transform 0.35s ease;
-  }
-
-  .grid-item:hover .overlay,
-  .grid-item.overlay-visible .overlay {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .overlay-title {
-    color: #fff;
-    font-size: 0.9rem;
+    inset-inline-start: 0.75rem;
+    top: 0.75rem;
+    padding: 0.22rem 0.7rem;
+    background: rgba(253, 252, 250, 0.92);
+    font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
-    text-align: center;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+
+  .grid-caption {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: 1rem;
+    padding-top: 0.85rem;
+  }
+
+  .grid-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
     line-height: 1.3;
   }
 
-  .overlay-price {
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-align: center;
+  .grid-item:hover .grid-title {
+    text-decoration: underline;
+    text-underline-offset: 5px;
   }
 
-  .overlay-status {
-    color: rgba(255, 255, 255, 0.9);
+  .grid-price {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .grid-meta {
+    grid-column: 1;
     font-size: 0.8rem;
-    font-weight: 500;
     letter-spacing: 0.05em;
-    text-align: center;
+    color: var(--ink-mute);
   }
 
-  .overlay-btn {
-    display: inline-block;
-    padding: 0.6rem 1.5rem;
-    background: #fff;
-    color: #111;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    border-radius: 2rem;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .overlay-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 520px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .grid {
-      grid-template-columns: 1fr;
+      gap: 1.5rem 1rem;
     }
 
-    .grid-item {
-      aspect-ratio: 4/3;
+    .grid-caption {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0.15rem;
+    }
+
+    .grid-title {
+      font-size: 1rem;
+    }
+
+    .grid-price {
+      grid-column: 1;
     }
   }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const prefersNoHover = window.matchMedia('(hover: none)').matches;
-    if (!prefersNoHover) return;
-
-    const items = document.querySelectorAll('[data-artwork-overlay]');
-    items.forEach((item) => {
-      item.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        if (target.closest('.overlay-btn')) return;
-        items.forEach((other) => {
-          if (other !== item) other.classList.remove('overlay-visible');
-        });
-        item.classList.toggle('overlay-visible');
-      });
-    });
-  });
-</script>

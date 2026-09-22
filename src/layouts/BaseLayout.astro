@@ -1,13 +1,16 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { url } from '../lib/paths';
 
 interface Props {
   title: string;
   description?: string;
+  /** Lets the header sit on top of a hero section instead of on a paper strip. */
+  transparentHeader?: boolean;
 }
 
-const { title, description = 'ציורים' } = Astro.props;
+const { title, description = 'ציורי צבעי מים מהוד השרון, הירקון ותל אביב', transparentHeader = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -16,16 +19,22 @@ const { title, description = 'ציורים' } = Astro.props;
     <meta charset="utf-8" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600&family=Frank+Ruhl+Libre:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="icon" href={url('favicon.ico')} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
     <title>{title}</title>
   </head>
   <body>
-    <Header />
+    <Header transparent={transparentHeader} />
     <main>
       <slot />
     </main>
@@ -34,6 +43,28 @@ const { title, description = 'ציורים' } = Astro.props;
 </html>
 
 <style is:global>
+  :root {
+    /* Paper and ink — the site itself stays quiet so colour comes from the paintings */
+    --paper: #f7f5f1;
+    --paper-deep: #efece5;
+    --paper-white: #fdfcfa;
+    --ink: #17140f;
+    --ink-soft: #46413a;
+    --ink-mute: #8b857b;
+    --line: rgba(23, 20, 15, 0.14);
+    --line-soft: rgba(23, 20, 15, 0.07);
+
+    --font-display: 'Frank Ruhl Libre', 'Times New Roman', serif;
+    --font-body: 'Assistant', system-ui, -apple-system, sans-serif;
+
+    --page: min(1440px, 100%);
+    --page-narrow: 760px;
+    --gutter: clamp(1.25rem, 5vw, 4rem);
+    --header-h: 76px;
+
+    --section-y: clamp(4.5rem, 11vw, 9.5rem);
+  }
+
   *,
   *::before,
   *::after {
@@ -42,6 +73,7 @@ const { title, description = 'ציורים' } = Astro.props;
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--header-h);
   }
 
   body {
@@ -50,9 +82,12 @@ const { title, description = 'ציורים' } = Astro.props;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: 'Rubik', sans-serif;
-    background: #fff;
-    color: #111;
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 0.35vw + 0.95rem, 1.15rem);
+    font-weight: 400;
+    line-height: 1.75;
+    background: var(--paper);
+    color: var(--ink);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -69,5 +104,143 @@ const { title, description = 'ציורים' } = Astro.props;
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  /* ---------- shared building blocks ---------- */
+
+  .shell {
+    max-width: var(--page);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+
+  .shell-narrow {
+    max-width: var(--page-narrow);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    padding-block: var(--section-y);
+  }
+
+  .eyebrow {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--ink-mute);
+    margin: 0 0 1.25rem;
+  }
+
+  .display-xl {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.25rem);
+    font-weight: 300;
+    line-height: 1.04;
+  }
+
+  .display-lg {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  .lead {
+    font-size: clamp(1.1rem, 0.6vw + 1rem, 1.45rem);
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* Hand-drawn looking divider, keeps sections from feeling like form rows */
+  .rule {
+    width: 100%;
+    height: 1px;
+    border: 0;
+    background: var(--line-soft);
+    margin: 0;
+  }
+
+  .link-underline {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid var(--ink);
+    transition: opacity 0.2s ease, gap 0.2s ease;
+  }
+
+  .link-underline:hover {
+    opacity: 0.6;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.95rem 2rem;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  }
+
+  .btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .btn-solid {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .btn-solid:hover {
+    background: transparent;
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 </style>

@@ -1,0 +1,103 @@
+---
+import { COPY } from '../lib/site';
+import { img, url } from '../lib/paths';
+import { heTitle, type Series } from '../lib/artworks';
+
+interface Props {
+  series: Series[];
+}
+
+const { series } = Astro.props;
+---
+
+<section class="series section" id="series">
+  <div class="shell">
+    <header class="series-head">
+      <span class="eyebrow">{COPY.seriesEyebrow}</span>
+      <h2 class="display-lg">{COPY.seriesTitle}</h2>
+      <p class="lead series-lead">{COPY.seriesLead}</p>
+    </header>
+
+    <ul class="series-list">
+      {series.map((item) => (
+        <li class="series-item">
+          <a href={`${url('gallery')}?subject=${item.slug}`}>
+            <span class="series-image">
+              <img src={img(item.cover.data.image)} alt={heTitle(item.cover)} loading="lazy" decoding="async" />
+            </span>
+            <span class="series-label">
+              <span class="series-name">{item.label}</span>
+              <span class="series-count">{item.count} עבודות</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .series-head {
+    max-width: 46ch;
+    margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+  }
+
+  .series-lead {
+    margin: 1.25rem 0 0;
+  }
+
+  .series-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .series-item a {
+    display: block;
+  }
+
+  .series-image {
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--paper-deep);
+  }
+
+  .series-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .series-item a:hover .series-image img {
+    transform: scale(1.05);
+  }
+
+  .series-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.9rem;
+  }
+
+  .series-name {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+  }
+
+  .series-item a:hover .series-name {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  .series-count {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+  }
+</style>

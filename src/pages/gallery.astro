@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FilterTags from '../components/FilterTags.astro';
+import ArtworkGrid from '../components/ArtworkGrid.astro';
+import { COPY, SITE } from '../lib/site';
+import { allArtworks } from '../lib/artworks';
+
+const url = Astro.url;
+const price = url.searchParams.get('price') || '';
+const status = url.searchParams.get('status') || '';
+const subject = url.searchParams.get('subject') || '';
+const sort = url.searchParams.get('sort') ?? '';
+const validSort = ['price-asc', 'price-desc'].includes(sort) ? sort : '';
+
+const artworks = await allArtworks();
+const availableCount = artworks.filter((artwork) => !artwork.data.sold).length;
+---
+
+<BaseLayout title={`עבודות | ${SITE.name}`} description="כל ציורי צבעי המים — מידות, מחירים וזמינות.">
+  <header class="gallery-head gallery-wide">
+    <div class="shell">
+      <h1 class="display-lg">{COPY.galleryTitle}</h1>
+      <p class="lead gallery-lead">{COPY.galleryLead}</p>
+      <p class="gallery-count">
+        {artworks.length} עבודות · {availableCount} זמינות
+      </p>
+    </div>
+  </header>
+
+  <div class="gallery-body gallery-wide">
+    <FilterTags activePrice={price} activeStatus={status} activeSubject={subject} activeSort={validSort} />
+    <ArtworkGrid clientFilter={true} sort={validSort} />
+  </div>
+</BaseLayout>
+
+<style>
+  /* The shop can use more of a big screen than the editorial pages do */
+  .gallery-wide {
+    --page: min(1640px, 100%);
+  }
+
+  .gallery-head {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .gallery-lead {
+    margin: 1.25rem 0 0;
+    max-width: 52ch;
+  }
+
+  .gallery-count {
+    margin: 1.5rem 0 0;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+  }
+</style>

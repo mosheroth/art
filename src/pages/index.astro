@@ -1,17 +1,53 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import FilterTags from '../components/FilterTags.astro';
-import ArtworkGrid from '../components/ArtworkGrid.astro';
+import Hero from '../components/Hero.astro';
+import ArtistIntro from '../components/ArtistIntro.astro';
+import SelectedWorks from '../components/SelectedWorks.astro';
+import WideFeature from '../components/WideFeature.astro';
+import SeriesBand from '../components/SeriesBand.astro';
+import SaleBand from '../components/SaleBand.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { HERO_SLUG, PORTRAIT_SLUG, SELECTED_SLUGS, SITE, WIDE_FEATURE_SLUG } from '../lib/site';
+import { allArtworks, curatedArtworks, subjectSeries } from '../lib/artworks';
 
-const url = Astro.url;
-const price = url.searchParams.get('price') || '';
-const status = url.searchParams.get('status') || '';
-const subject = url.searchParams.get('subject') || '';
-const sort = url.searchParams.get('sort') ?? '';
-const validSort = ['price-asc', 'price-desc'].includes(sort) ? sort : '';
+const artworks = await allArtworks();
+const bySlug = (slug: string) => artworks.find((artwork) => artwork.slug === slug);
+
+const hero = bySlug(HERO_SLUG) ?? artworks[0];
+const wide = bySlug(WIDE_FEATURE_SLUG) ?? artworks[1] ?? hero;
+const portrait = bySlug(PORTRAIT_SLUG) ?? artworks[2] ?? hero;
+
+const selected = await curatedArtworks(SELECTED_SLUGS, 8, [hero.slug, wide.slug, portrait.slug]);
+const series = (await subjectSeries()).slice(0, 4);
+
+const usedSlugs = new Set([hero.slug, wide.slug, portrait.slug, ...selected.map((artwork) => artwork.slug)]);
+const availableArtworks = artworks.filter((artwork) => artwork.data.price && !artwork.data.sold);
+const saleThumbs = [
+  ...availableArtworks.filter((artwork) => !usedSlugs.has(artwork.slug)),
+  ...availableArtworks.filter((artwork) => usedSlugs.has(artwork.slug)),
+];
 ---
 
-<BaseLayout title="משה רוט, ציורים" description="עבודות צבעי מים למכירה">
-  <FilterTags activePrice={price} activeStatus={status} activeSubject={subject} activeSort={validSort} />
-  <ArtworkGrid clientFilter={true} sort={validSort} />
+<BaseLayout
+  title={`${SITE.name} — ציורי צבעי מים`}
+  description="ציורי צבעי מים של משה רוט: הוד השרון, הירקון, תל אביב והים. עבודות מקור על נייר, וגם למכירה."
+  transparentHeader={true}
+>
+  <Hero artwork={hero} />
+  <ArtistIntro portrait={portrait} worksCount={artworks.length} />
+  <SelectedWorks artworks={selected} />
+  <WideFeature artwork={wide} />
+  <SeriesBand series={series} />
+  <SaleBand available={saleThumbs} />
+  <ContactBand />
 </BaseLayout>
+
+<script>
+  // The shop used to live on the home page; old filter links keep working.
+  const params = new URLSearchParams(window.location.search);
+  const legacyKeys = ['price', 'status', 'subject', 'sort'];
+  if (legacyKeys.some((key) => params.has(key))) {
+    const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+    window.location.replace(`${base}/gallery?${params.toString()}`);
+  }
+</script>
