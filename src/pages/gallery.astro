@@ -17,7 +17,7 @@ const availableCount = artworks.filter((artwork) => !artwork.data.sold).length;
 ---
 
 <BaseLayout title={`עבודות | ${SITE.name}`} description="כל ציורי צבעי המים — מידות, מחירים וזמינות.">
-  <header class="gallery-head">
+  <header class="gallery-head gallery-wide">
     <div class="shell">
       <h1 class="display-lg">{COPY.galleryTitle}</h1>
       <p class="lead gallery-lead">{COPY.galleryLead}</p>
@@ -27,11 +27,18 @@ const availableCount = artworks.filter((artwork) => !artwork.data.sold).length;
     </div>
   </header>
 
-  <FilterTags activePrice={price} activeStatus={status} activeSubject={subject} activeSort={validSort} />
-  <ArtworkGrid clientFilter={true} sort={validSort} />
+  <div class="gallery-body gallery-wide">
+    <FilterTags activePrice={price} activeStatus={status} activeSubject={subject} activeSort={validSort} />
+    <ArtworkGrid clientFilter={true} sort={validSort} />
+  </div>
 </BaseLayout>
 
 <style>
+  /* The shop can use more of a big screen than the editorial pages do */
+  .gallery-wide {
+    --page: min(1640px, 100%);
+  }
+
   .gallery-head {
     padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 3vw, 2.5rem);
   }
