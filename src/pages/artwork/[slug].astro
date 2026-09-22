@@ -37,8 +37,6 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
   title={`${title} | ${SITE.name}`}
   description={artwork.data.description ?? `${title} — צבעי מים על נייר מאת ${SITE.name}`}
 >
-  <div id="drift-zoom-root" dir="ltr" aria-hidden="true"></div>
-
   <article class="artwork">
     <div class="shell artwork-top">
       <a href={url('gallery')} class="back-btn">
@@ -49,17 +47,12 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
 
     <figure class="artwork-stage">
       <div class="stage-wash" style={`background-image: url('${imgSrc}')`} aria-hidden="true"></div>
-      <div class="stage-frame" dir="ltr">
-        <img
-          src={imgSrc}
-          alt={title}
-          id="original-image"
-          data-zoom={imgSrc}
-          width={size?.width}
-          height={size?.height}
-        />
+      <div class="stage-frame" style={size ? `max-width: ${size.width}px` : undefined}>
+        <img src={imgSrc} alt={title} width={size?.width} height={size?.height} />
       </div>
-      <figcaption class="stage-hint">העבירו את העכבר על הציור להגדלה</figcaption>
+      <figcaption class="stage-hint">
+        <a href={imgSrc} target="_blank" rel="noopener noreferrer">לצפייה בגודל מלא</a>
+      </figcaption>
     </figure>
 
     <div class="shell artwork-body">
@@ -202,6 +195,7 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
 
   .stage-frame {
     padding: clamp(0.75rem, 1.6vw, 1.6rem);
+    max-width: 100%;
     background: var(--paper-white);
     box-shadow:
       0 1px 2px rgba(23, 20, 15, 0.08),
@@ -214,15 +208,25 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
     max-width: 100%;
     max-height: min(74svh, 760px);
     object-fit: contain;
-    cursor: zoom-in;
     vertical-align: top;
   }
 
   .stage-hint {
     margin: 0;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
     color: var(--ink-mute);
+  }
+
+  .stage-hint a {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.15rem;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .stage-hint a:hover {
+    color: var(--ink);
+    border-color: var(--ink);
   }
 
   .artwork-body {
@@ -352,28 +356,6 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
     color: var(--ink-mute);
   }
 
-  #drift-zoom-root {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  #drift-zoom-root .drift-zoom-pane {
-    pointer-events: none;
-  }
-
-  :global(.drift-zoom-pane.drift-inline) {
-    width: 400px !important;
-    height: 400px !important;
-    border-radius: 200px !important;
-    direction: ltr;
-  }
-
-  :global(.drift-zoom-pane.drift-inline img) {
-    direction: ltr;
-  }
-
   .room-scene {
     position: relative;
     width: 100%;
@@ -488,23 +470,3 @@ const more = [...others, ...artworks.filter((entry) => entry.slug !== artwork.sl
     }
   }
 </style>
-
-<script>
-  import Drift from 'drift-zoom';
-  import 'drift-zoom/src/css/drift-basic.css';
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const img = document.getElementById('original-image');
-    const root = document.getElementById('drift-zoom-root');
-    if (img && root) {
-      new Drift(img, {
-        inlinePane: true,
-        zoomFactor: 3,
-        injectBaseStyles: true,
-        handleTouch: false,
-        inlineContainer: root,
-        boundingBoxContainer: root,
-      });
-    }
-  });
-</script>

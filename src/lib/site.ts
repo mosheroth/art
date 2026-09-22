@@ -57,7 +57,7 @@ export const COPY = {
   featureLink: 'לעמוד העבודה',
 
   seriesEyebrow: 'נושאים',
-  seriesTitle: 'לפי מה שמצטבר',
+  seriesTitle: 'מה שחוזר בציורים',
   seriesLead: 'העבודות מסתדרות לקבוצות מעצמן. בחרו נושא כדי לראות את כולו.',
 
   saleEyebrow: 'רכישה',
