@@ -49,6 +49,11 @@ const meta = [mediumHe(artwork), artwork.data.year].filter(Boolean).join(' · ')
     background: linear-gradient(to top, rgba(23, 20, 15, 0.55) 0%, rgba(23, 20, 15, 0.08) 45%, transparent 75%);
   }
 
+  /* sepia washes out the bottom of the image, so the quote needs a deeper scrim */
+  html[data-tone='sepia'] .feature-scrim {
+    background: linear-gradient(to top, rgba(28, 20, 10, 0.72) 0%, rgba(28, 20, 10, 0.2) 48%, transparent 80%);
+  }
+
   .feature-quote {
     position: absolute;
     inset-inline: var(--gutter);
