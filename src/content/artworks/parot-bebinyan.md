@@ -1,0 +1,12 @@
+---
+title: Cows in a Building
+titleHe: פרות בבנין
+image: /images/parot-bebinyan.jpg
+year: "2026"
+medium: Watercolor on paper
+size: 23 × 15 cm
+sold: false
+subjects: [tel-aviv, urban]
+---
+
+שני דפים, שני רגעים — פרה בשדה חום ופרה בין קירות בטון; זוג לתלייה במסגרת אחת.

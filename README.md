@@ -2,7 +2,7 @@
 
 A portfolio-first site for a watercolour painter working from local subjects (Hod HaSharon, the Yarkon, Tel Aviv, the coast). Built with Astro, Hebrew/RTL, deployed to GitHub Pages.
 
-The site leads with the paintings and the artist's story; buying is a secondary layer that lives on its own page.
+The home page is quiet black-and-white chrome. Four bodies of work — figure, Tel Aviv, landscape, and works for sale — are the way in; buying stays on `/gallery`.
 
 ## Quick Start
 
@@ -17,7 +17,7 @@ Open [http://localhost:4321/art](http://localhost:4321/art) (the `base` is set i
 
 | Route | What it is |
 | --- | --- |
-| `/` | Home: large hero painting, artist story, selected works, full-bleed feature, subject groups, a quiet purchase band, contact |
+| `/` | Home: a short intro, then four category bands (גוף, תל אביב, נוף, למכירה) |
 | `/gallery` | The shop: every artwork with price and availability, plus subject/price/status filters and sorting |
 | `/about` | The artist story in full, with a short "how it works" list |
 | `/artwork/[slug]` | One painting, shown large, with details, purchase info, a room mock-up and related works |
@@ -34,13 +34,9 @@ Open [http://localhost:4321/art](http://localhost:4321/art) (the `base` is set i
 All site text, plus which paintings appear where, live in `src/lib/site.ts`:
 
 - `SITE` — name, discipline, location, Instagram
-- `HERO_SLUG` — the painting at the top of the home page
-- `WIDE_FEATURE_SLUG` — the full-bleed painting mid-page
-- `PORTRAIT_SLUG` — the painting used beside the artist story
-- `SELECTED_SLUGS` — curated order for the home page gallery (missing slugs fall back to the rest of the collection)
-- `COPY` — every Hebrew string on the home, gallery and about pages
-
-Subject groups on the home page are generated from the artworks themselves: any subject tag with at least two paintings becomes a group, ordered by how many works it has.
+- `HOME_CATEGORIES` — the four bands on the home page and in the header (label, gallery query, lead line, curated slugs)
+- `PORTRAIT_SLUG` — the painting used beside the artist story on `/about`
+- `COPY` — Hebrew strings on the home, gallery and about pages
 
 ### Adding artwork
 
@@ -76,13 +72,11 @@ English mediums such as `Watercolor on paper` are shown in Hebrew automatically 
 
 ## Design
 
-The interface stays paper and ink so that all colour comes from the paintings. Tokens live at the top of `src/layouts/BaseLayout.astro`:
+The chrome is black on white so colour comes only from the paintings. Tokens live at the top of `src/layouts/BaseLayout.astro`:
 
-- Paper `#f7f5f1`, ink `#17140f`, plus soft/muted ink and hairlines
+- Paper `#ffffff`, ink `#111111`, plus muted ink and hairlines
 - Display type: Frank Ruhl Libre; body type: Assistant
 - `--page`, `--gutter`, `--section-y` for layout rhythm; `/gallery` widens `--page` locally
-
-The hero and the artwork page both blur the painting behind itself, so each page takes its ambient colour from the work on it.
 
 Shared helpers:
 
