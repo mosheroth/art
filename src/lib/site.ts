@@ -41,7 +41,7 @@ export const HOME_MIX_SLUGS = [
 export const COPY = {
   introTitle: 'משה רוט',
   introLead: 'צבעי מים על נייר.',
-  introBody: 'גוף, תל אביב, נוף.',
+  introBody: 'גוף, עיר ונוף.',
 
   contactEyebrow: 'יצירת קשר',
   contactTitle: 'נשמח לשמוע',
