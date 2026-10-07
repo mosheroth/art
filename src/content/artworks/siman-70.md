@@ -6,7 +6,7 @@ year: "2026"
 medium: Watercolor on paper
 sold: false
 price: "₪700"
-subjects: [urban, hod-hasharon]
+subjects: [urban]
 ---
 
 צבעי מים — שלט מהירות 70 מעל אזהרת פנייה, על עמוד אחד מול רקע בהיר.

@@ -19,7 +19,7 @@ const IMAGES_DIR = path.join(ROOT, 'public', 'images');
 const ARTWORKS_DIR = path.join(ROOT, 'src', 'content', 'artworks');
 
 const SITE_BASE = 'https://mosheroth.github.io/art';
-const SUBJECT_SLUGS = ['sea', 'figure', 'landscape', 'stilllife', 'urban', 'hod-hasharon', 'yarkon', 'tel-aviv'];
+const SUBJECT_SLUGS = ['sea', 'figure', 'landscape', 'stilllife', 'urban', 'yarkon', 'tel-aviv'];
 
 function parseArgs() {
   const args = process.argv.slice(2);

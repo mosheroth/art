@@ -1,6 +1,6 @@
 # Moshe Rot — Watercolour Artist Site
 
-A portfolio-first site for a watercolour painter working from local subjects (Hod HaSharon, the Yarkon, Tel Aviv, the coast). Built with Astro, Hebrew/RTL, deployed to GitHub Pages.
+A portfolio-first site for a watercolour painter working from local subjects (the Yarkon, Tel Aviv, the coast). Built with Astro, Hebrew/RTL, deployed to GitHub Pages.
 
 The home page is quiet black-and-white chrome: a short intro beside a framed featured painting, then a mixed hang of works. The header links to works for sale, workshops, and the about page. Subject filters still live on `/gallery`.
 
@@ -33,7 +33,7 @@ Open [http://localhost:4321/art](http://localhost:4321/art) (the `base` is set i
 
 All site text, plus which paintings appear where, live in `src/lib/site.ts`:
 
-- `SITE` — name, discipline, location, Instagram
+- `SITE` — name, discipline, Instagram
 - `NAV_LINKS` — header and footer links (למכירה, סדנאות, על האמן)
 - `HOME_FEATURED_SLUG` — the painting framed beside the home intro
 - `HOME_MIX_SLUGS` — the mixed hang of paintings on the home page

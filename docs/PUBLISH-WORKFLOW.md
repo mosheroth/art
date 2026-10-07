@@ -89,7 +89,7 @@ node scripts/publish-artwork.mjs \
 **אופציונלי:** `--slug` (אם לא נתון — נגזר מהכותרת), `--body`, `--subjects`
 
 **נושאים אפשריים:**  
-`sea`, `figure`, `landscape`, `stilllife`, `urban`, `hod-hasharon`, `yarkon`, `tel-aviv`
+`sea`, `figure`, `landscape`, `stilllife`, `urban`, `yarkon`, `tel-aviv`
 
 הסקריפט יוצר:
 - העתקה של התמונה ל־`public/images/<slug>.<ext>`
