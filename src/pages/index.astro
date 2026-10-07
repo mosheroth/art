@@ -1,27 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import QuietIntro from '../components/QuietIntro.astro';
-import CategoryBand from '../components/CategoryBand.astro';
+import HomeMix from '../components/HomeMix.astro';
 import ContactBand from '../components/ContactBand.astro';
-import { HOME_CATEGORIES, SITE } from '../lib/site';
-import { allArtworks, curatedArtworks } from '../lib/artworks';
-import { url } from '../lib/paths';
+import { HOME_MIX_SLUGS, SITE } from '../lib/site';
+import { curatedArtworks } from '../lib/artworks';
 
-const artworks = await allArtworks();
-const available = artworks.filter((artwork) => artwork.data.price && !artwork.data.sold);
-
-const bands = await Promise.all(
-  HOME_CATEGORIES.map(async (cat) => {
-    const count = cat.slugs.length;
-    if (cat.id === 'sale') {
-      const picked = await curatedArtworks([...cat.slugs], count);
-      const forSale = picked.filter((artwork) => artwork.data.price && !artwork.data.sold);
-      const extra = available.filter((artwork) => !forSale.includes(artwork));
-      return { ...cat, works: [...forSale, ...extra].slice(0, count) };
-    }
-    return { ...cat, works: await curatedArtworks([...cat.slugs], count) };
-  })
-);
+const works = await curatedArtworks([...HOME_MIX_SLUGS], HOME_MIX_SLUGS.length);
 ---
 
 <BaseLayout
@@ -29,15 +14,7 @@ const bands = await Promise.all(
   description="ציורי צבעי מים של משה רוט: גוף, תל אביב, נוף. עבודות מקור על נייר, וגם למכירה."
 >
   <QuietIntro />
-  {bands.map((band) => (
-    <CategoryBand
-      id={band.id}
-      label={band.label}
-      lead={band.lead}
-      href={`${url('gallery')}?${band.query}`}
-      artworks={band.works}
-    />
-  ))}
+  <HomeMix artworks={works} />
   <ContactBand />
 </BaseLayout>
 

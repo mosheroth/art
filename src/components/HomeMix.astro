@@ -1,0 +1,90 @@
+---
+import { img, artworkUrl } from '../lib/paths';
+import { heTitle, type Artwork } from '../lib/artworks';
+import { imageSize } from '../lib/imageSize';
+
+interface Props {
+  artworks: Artwork[];
+}
+
+const { artworks } = Astro.props;
+---
+
+<section class="mix" aria-label="עבודות">
+  <div class="shell">
+    <ul class="mix-list">
+      {artworks.map((artwork) => {
+        const size = imageSize(artwork.data.image);
+        return (
+          <li>
+            <a class="mix-work" href={artworkUrl(artwork.slug)}>
+              <img
+                src={img(artwork.data.image)}
+                alt={heTitle(artwork)}
+                width={size?.width}
+                height={size?.height}
+                loading="eager"
+                decoding="async"
+              />
+              <span class="mix-name">{heTitle(artwork)}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .mix {
+    padding-block: clamp(1.75rem, 4vw, 3rem) clamp(3rem, 7vw, 5rem);
+  }
+
+  .mix-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    column-count: 3;
+    column-gap: clamp(1rem, 2vw, 1.75rem);
+  }
+
+  .mix-list li {
+    break-inside: avoid;
+    margin: 0 0 clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .mix-work {
+    display: block;
+  }
+
+  .mix-work img {
+    width: 100%;
+    height: auto;
+    background: var(--paper-deep);
+  }
+
+  .mix-name {
+    display: block;
+    padding-top: 0.55rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .mix-work:hover .mix-name {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .mix-list {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .mix-list {
+      column-count: 1;
+    }
+  }
+</style>

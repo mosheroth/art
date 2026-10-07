@@ -10,54 +10,38 @@ export const SITE = {
 /** Artwork standing in for a studio portrait on the about page. */
 export const PORTRAIT_SLUG = 'profile-portrait';
 
-/**
- * The four bodies of work the home page and the header are built around.
- * `query` is appended to /gallery. `slugs` are the paintings shown in that band.
- */
+/** Header and footer links into the gallery. */
 export const HOME_CATEGORIES = [
-  {
-    id: 'figure',
-    label: 'גוף',
-    query: 'subject=figure',
-    lead: 'ציור מהתבוננות, בישיבה אחת.',
-    slugs: ['figures-in-water', 'sepia-seated-figure', 'polina-4', 'seated-figure-profile'],
-  },
-  {
-    id: 'tel-aviv',
-    label: 'תל אביב',
-    query: 'subject=tel-aviv',
-    lead: 'עבודות 2026, מה שנשלח לגלריה.',
-    slugs: [
-      'barzel-bashekiya',
-      'rakevet-hashalom',
-      'simta-besharona',
-      'kikar-rabin',
-      'ayalon',
-      'migesher-hachayalim',
-    ],
-  },
-  {
-    id: 'landscape',
-    label: 'נוף',
-    query: 'subject=landscape',
-    lead: 'מקומות שאני עובר בהם.',
-    slugs: ['yarkon-etz-al-hamayim', 'park-sepia', 'sargent-stream-shadow', 'under-the-canopy'],
-  },
-  {
-    id: 'sale',
-    label: 'למכירה',
-    query: 'status=available',
-    lead: 'מקור אחד על נייר, בלי הדפסים.',
-    slugs: ['sea-after-storm', 'flowers-batya-3', 'figures-in-water', 'sepia-reclining-figure'],
-  },
+  { id: 'figure', label: 'גוף', query: 'subject=figure' },
+  { id: 'tel-aviv', label: 'תל אביב', query: 'subject=tel-aviv' },
+  { id: 'landscape', label: 'נוף', query: 'subject=landscape' },
+  { id: 'sale', label: 'למכירה', query: 'status=available' },
 ] as const;
+
+/** Mixed order on the home page — figure, city and landscape together, not in bands. */
+export const HOME_MIX_SLUGS = [
+  'barzel-bashekiya',
+  'figures-in-water',
+  'yarkon-etz-al-hamayim',
+  'sepia-seated-figure',
+  'rakevet-hashalom',
+  'flowers-batya-3',
+  'simta-besharona',
+  'park-sepia',
+  'polina-4',
+  'sea-after-storm',
+  'ayalon',
+  'sepia-reclining-figure',
+  'kikar-rabin',
+  'sargent-stream-shadow',
+  'seated-figure-profile',
+  'under-the-canopy',
+];
 
 export const COPY = {
   introTitle: 'משה רוט',
   introLead: 'צבעי מים על נייר.',
   introBody: 'גוף, תל אביב, נוף.',
-
-  categoryAll: 'הכל',
 
   contactEyebrow: 'יצירת קשר',
   contactTitle: 'נשמח לשמוע',

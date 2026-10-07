@@ -1,5 +1,5 @@
 ---
-import { COPY, SITE } from '../lib/site';
+import { COPY } from '../lib/site';
 ---
 
 <section class="intro">
@@ -7,7 +7,6 @@ import { COPY, SITE } from '../lib/site';
     <p class="intro-name">{COPY.introTitle}</p>
     <p class="intro-lead">{COPY.introLead}</p>
     <p class="intro-body">{COPY.introBody}</p>
-    <p class="intro-place">{SITE.discipline} · {SITE.location}</p>
   </div>
 </section>
 
@@ -39,12 +38,5 @@ import { COPY, SITE } from '../lib/site';
 
   .intro-body {
     margin-top: 0.15rem;
-  }
-
-  .intro-place {
-    margin: 1.75rem 0 0;
-    font-size: 0.78rem;
-    letter-spacing: 0.16em;
-    color: var(--ink-mute);
   }
 </style>
