@@ -6,6 +6,7 @@ year: "2026"
 medium: Watercolor on paper
 size: 30 × 17 cm
 sold: false
+price: "₪900"
 subjects: [yarkon, landscape, tel-aviv]
 ---
 

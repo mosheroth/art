@@ -5,6 +5,7 @@ image: /images/anna-kruken-3.jpg
 year: "2026"
 medium: Sepia wash on paper
 sold: false
+price: "₪900"
 subjects: [figure]
 ---
 

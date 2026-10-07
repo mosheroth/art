@@ -6,6 +6,7 @@ year: "2026"
 medium: Watercolor on paper
 size: 42 × 29 cm
 sold: false
+price: "₪1,000"
 subjects: [tel-aviv, urban]
 ---
 

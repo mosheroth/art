@@ -5,6 +5,7 @@ image: /images/siman-70.jpg
 year: "2026"
 medium: Watercolor on paper
 sold: false
+price: "₪700"
 subjects: [urban, hod-hasharon]
 ---
 
