@@ -6,7 +6,7 @@ category: for-sale
 year: "2026"
 medium: Sepia wash on paper
 size: 24 × 32 cm
-price: "₪180"
+price: "₪1,200"
 sold: false
 subjects: [figure]
 ---
