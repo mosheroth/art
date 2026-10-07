@@ -13,5 +13,6 @@ export function img(path: string): string {
 }
 
 export function artworkUrl(slug: string): string {
-  return url(`artwork/${slug}`);
+  const clean = slug.replace(/^\/+|\/+$/g, '');
+  return url(`artwork/${clean}/`);
 }

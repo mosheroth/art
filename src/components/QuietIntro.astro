@@ -21,7 +21,7 @@ const size = artwork ? imageSize(artwork.data.image) : null;
     </div>
 
     {artwork && (
-      <a class="intro-piece" href={artworkUrl(artwork.slug)}>
+      <a class="intro-piece" href={artworkUrl(artwork.slug)} aria-label={heTitle(artwork)}>
         <span class="intro-frame">
           <img
             src={img(artwork.data.image)}
@@ -95,6 +95,10 @@ const size = artwork ? imageSize(artwork.data.image) : null;
     padding-top: 0.6rem;
     font-size: 0.88rem;
     color: var(--ink-soft);
+  }
+
+  .intro-piece:hover .intro-frame {
+    background: #000000;
   }
 
   .intro-piece:hover .intro-caption {
