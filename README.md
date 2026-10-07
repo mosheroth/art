@@ -77,7 +77,7 @@ The chrome is black on white so colour comes only from the paintings. Tokens liv
 
 - Paper `#ffffff`, ink `#111111`, plus muted ink and hairlines
 - Display type: Frank Ruhl Libre; body type: Assistant
-- `--page`, `--gutter`, `--section-y` for layout rhythm; `/gallery` widens `--page` locally
+- `--page`, `--gutter`, `--section-y` for layout rhythm; home and gallery share the same page width so side margins match
 
 Shared helpers:
 
