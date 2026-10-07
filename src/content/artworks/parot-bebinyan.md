@@ -1,6 +1,6 @@
 ---
-title: Cows in a Building
-titleHe: פרות בבנין
+title: Cows on Begin
+titleHe: פרות בבגין
 image: /images/parot-bebinyan.jpg
 year: "2026"
 medium: Watercolor on paper
