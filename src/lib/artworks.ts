@@ -11,6 +11,7 @@ const MEDIUM_HE: Record<string, string> = {
   'watercolor on paper': 'צבעי מים על נייר',
   'watercolor': 'צבעי מים',
   'gouache on paper': 'גואש על נייר',
+  'sepia wash on paper': 'שטיפת ספיה על נייר',
 };
 
 /** Artwork files carry either English or Hebrew mediums; the site only shows Hebrew. */
