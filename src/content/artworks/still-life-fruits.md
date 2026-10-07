@@ -6,7 +6,7 @@ category: for-sale
 year: "2026"
 medium: Watercolor on paper
 size: 21 × 29 cm
-price: "₪100"
+price: "₪300"
 sold: false
 subjects: [stilllife]
 ---
