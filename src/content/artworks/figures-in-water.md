@@ -6,7 +6,7 @@ category: for-sale
 year: "2026"
 medium: Watercolor on paper
 size: 32 × 24 cm
-price: "₪1,200"
+price: "₪1,000"
 sold: false
 subjects: [sea, figure]
 ---
