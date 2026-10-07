@@ -21,6 +21,7 @@ export const HOME_CATEGORIES = [
 /** Mixed order on the home page — figure, city and landscape together, not in bands. */
 export const HOME_MIX_SLUGS = [
   'anna-kruken-1',
+  'torso-sepia',
   'barzel-bashekiya',
   'figures-in-water',
   'yarkon-etz-al-hamayim',
@@ -33,6 +34,7 @@ export const HOME_MIX_SLUGS = [
   'polina-4',
   'sea-after-storm',
   'ayalon',
+  'siman-70',
   'anna-kruken-3',
   'sepia-reclining-figure',
   'kikar-rabin',
