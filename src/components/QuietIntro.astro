@@ -1,23 +1,54 @@
 ---
 import { COPY } from '../lib/site';
+import { heTitle, type Artwork } from '../lib/artworks';
+import { imageSize } from '../lib/imageSize';
+import { img, artworkUrl } from '../lib/paths';
+
+interface Props {
+  artwork?: Artwork;
+}
+
+const { artwork } = Astro.props;
+const size = artwork ? imageSize(artwork.data.image) : null;
 ---
 
 <section class="intro">
   <div class="shell intro-inner">
-    <p class="intro-name">{COPY.introTitle}</p>
-    <p class="intro-lead">{COPY.introLead}</p>
-    <p class="intro-body">{COPY.introBody}</p>
+    <div class="intro-copy">
+      <p class="intro-name">{COPY.introTitle}</p>
+      <p class="intro-lead">{COPY.introLead}</p>
+      <p class="intro-body">{COPY.introBody}</p>
+    </div>
+
+    {artwork && (
+      <a class="intro-piece" href={artworkUrl(artwork.slug)}>
+        <span class="intro-frame">
+          <img
+            src={img(artwork.data.image)}
+            alt={heTitle(artwork)}
+            width={size?.width}
+            height={size?.height}
+            loading="eager"
+            decoding="async"
+          />
+        </span>
+        <span class="intro-caption">{heTitle(artwork)}</span>
+      </a>
+    )}
   </div>
 </section>
 
 <style>
   .intro {
-    padding-block: clamp(2.75rem, 7vw, 5rem) clamp(2.25rem, 5vw, 3.5rem);
+    padding-block: clamp(2.25rem, 6vw, 4.5rem) clamp(2rem, 4.5vw, 3.25rem);
     border-bottom: 1px solid var(--line);
   }
 
   .intro-inner {
-    max-width: 36rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 22rem);
+    gap: clamp(1.75rem, 5vw, 4.5rem);
+    align-items: center;
   }
 
   .intro-name {
@@ -38,5 +69,47 @@ import { COPY } from '../lib/site';
 
   .intro-body {
     margin-top: 0.15rem;
+  }
+
+  .intro-piece {
+    display: block;
+    justify-self: stretch;
+  }
+
+  .intro-frame {
+    display: block;
+    background: #111111;
+    padding: 11px;
+  }
+
+  .intro-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: var(--paper);
+  }
+
+  .intro-caption {
+    display: block;
+    padding-top: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .intro-piece:hover .intro-caption {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 720px) {
+    .intro-inner {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    .intro-piece {
+      max-width: 22rem;
+    }
   }
 </style>

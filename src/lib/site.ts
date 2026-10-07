@@ -7,9 +7,6 @@ export const SITE = {
   instagramHandle: '@mosheroth85',
 };
 
-/** Artwork standing in for a studio portrait on the about page. */
-export const PORTRAIT_SLUG = 'profile-portrait';
-
 /** Header and footer links into the gallery. */
 export const HOME_CATEGORIES = [
   { id: 'figure', label: 'גוף', query: 'subject=figure' },
@@ -17,6 +14,9 @@ export const HOME_CATEGORIES = [
   { id: 'landscape', label: 'נוף', query: 'subject=landscape' },
   { id: 'sale', label: 'למכירה', query: 'status=available' },
 ] as const;
+
+/** Featured painting beside the home intro, in a black frame. */
+export const HOME_FEATURED_SLUG = 'sepia-seated-figure';
 
 /** Mixed order on the home page — figure, city and landscape together, not in bands. */
 export const HOME_MIX_SLUGS = [
@@ -26,12 +26,9 @@ export const HOME_MIX_SLUGS = [
   'figures-in-water',
   'yarkon-etz-al-hamayim',
   'anna-kruken-2',
-  'sepia-seated-figure',
   'rakevet-hashalom',
-  'flowers-batya-3',
   'simta-besharona',
   'park-sepia',
-  'polina-4',
   'sea-after-storm',
   'ayalon',
   'siman-70',
@@ -40,7 +37,6 @@ export const HOME_MIX_SLUGS = [
   'kikar-rabin',
   'sargent-stream-shadow',
   'seated-figure-profile',
-  'under-the-canopy',
 ];
 
 export const COPY = {
@@ -57,17 +53,8 @@ export const COPY = {
   galleryLead: 'כל הציורים שבאתר. הסינון לפי נושא, מחיר וזמינות.',
 
   aboutTitle: 'על האמן',
-  aboutLead: 'צבעי מים, בעיקר בשטח, בעיקר מהמקומות שאני עובר בהם כל יום.',
   aboutBody: [
-    'התחלתי לצייר בצבעי מים בגלל הנוחות: קופסה קטנה, מחברת נייר וכוס מים מספיקים כדי לעבוד בכל מקום. עם הזמן התברר שזו גם הסיבה הקשה — צבעי מים לא סולחים על היסוס, וכל ניסיון לתקן נשאר על הנייר.',
-    'הנושאים מגיעים מהסביבה המיידית: הוד השרון שבה אני גר, גדות הירקון, נסיעות לתל אביב, וחופים בשעות שבהן הים מעניין יותר מהשמש. לצידם יש עבודות דמות מתוך מפגשי ציור מהתבוננות, ומדי פעם העתק אחד מתוך הערכה — כמו סרג׳נט — כדרך ללמוד מהיד של מישהו אחר.',
-    'רוב הציורים קטנים, בין 21×29 ל־40×50 ס״מ, כי זה הגודל שאפשר לסיים בישיבה אחת. הם נשארים כפי שיצאו: מהירים, לא מלוטשים, עם הנייר הלבן שמבליח מבין הכתמים.',
-  ],
-  aboutPracticeTitle: 'איך זה עובד',
-  aboutPractice: [
-    { label: 'מדיום', value: 'צבעי מים וגואש על נייר' },
-    { label: 'שיטה', value: 'ציור בשטח, בדרך כלל בישיבה אחת' },
-    { label: 'גדלים', value: '21×29 עד 40×50 ס״מ' },
-    { label: 'איפה', value: 'הוד השרון, הירקון, תל אביב, חופי המרכז' },
+    'היי, אני משה רוט, יליד 1985. גר בהוד השרון, מצייר צבעי מים, בעיקר בשטח, בעיקר מהמקומות שאני עובר בהם כל יום.',
+    'מה שמרתק אותי זה לקחת רגע מהמציאות ולהפוך אותו לעצם יפה ומפתיע שלא היה קיים קודם. חשוב לי לרגש ולמצוא את היופי בצורה ספונטנית.',
   ],
 };
