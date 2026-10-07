@@ -44,7 +44,7 @@ export const COPY = {
 
   contactEyebrow: 'יצירת קשר',
   contactTitle: 'נשמח לשמוע',
-  contactBody: 'מתעניינים בציור, בגלריה, או סתם להגיד שלום — אני עונה לכל הודעה.',
+  contactBody: 'דברו איתי :)',
   contactCta: 'אינסטגרם',
 
   galleryTitle: 'עבודות',

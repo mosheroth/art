@@ -1,6 +1,6 @@
 ---
-title: Speed Limit 70
-titleHe: שלט 70
+title: The Entrance to Ein Yahav
+titleHe: הכניסה לעין יהב
 image: /images/siman-70.jpg
 year: "2026"
 medium: Watercolor on paper
@@ -9,4 +9,4 @@ price: "₪700"
 subjects: [urban]
 ---
 
-צבעי מים — שלט מהירות 70 מעל אזהרת פנייה, על עמוד אחד מול רקע בהיר.
+צבעי מים — הכניסה לעין יהב, שלט מהירות 70 מעל אזהרת פנייה על עמוד אחד.
