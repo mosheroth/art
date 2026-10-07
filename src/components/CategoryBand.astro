@@ -36,7 +36,7 @@ const { id, label, lead, href, artworks } = Astro.props;
                 alt={heTitle(artwork)}
                 width={size?.width}
                 height={size?.height}
-                loading="lazy"
+                loading="eager"
                 decoding="async"
               />
               <span class="cat-caption">
@@ -95,7 +95,7 @@ const { id, label, lead, href, artworks } = Astro.props;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2vw, 1.75rem);
     align-items: end;
   }
@@ -134,7 +134,7 @@ const { id, label, lead, href, artworks } = Astro.props;
     flex-shrink: 0;
   }
 
-  @media (max-width: 560px) {
+  @media (max-width: 900px) {
     .cat-list {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }

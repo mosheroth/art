@@ -1,6 +1,5 @@
 ---
-import { COPY, HOME_CATEGORIES, SITE } from '../lib/site';
-import { url } from '../lib/paths';
+import { COPY, SITE } from '../lib/site';
 ---
 
 <section class="intro">
@@ -8,20 +7,13 @@ import { url } from '../lib/paths';
     <p class="intro-name">{COPY.introTitle}</p>
     <p class="intro-lead">{COPY.introLead}</p>
     <p class="intro-body">{COPY.introBody}</p>
-    <ul class="intro-cats">
-      {HOME_CATEGORIES.map((cat) => (
-        <li>
-          <a href={`#${cat.id}`}>{cat.label}</a>
-        </li>
-      ))}
-    </ul>
     <p class="intro-place">{SITE.discipline} · {SITE.location}</p>
   </div>
 </section>
 
 <style>
   .intro {
-    padding-block: clamp(4rem, 12vw, 8rem) clamp(3rem, 8vw, 5.5rem);
+    padding-block: clamp(2.75rem, 7vw, 5rem) clamp(2.25rem, 5vw, 3.5rem);
     border-bottom: 1px solid var(--line);
   }
 
@@ -49,28 +41,8 @@ import { url } from '../lib/paths';
     margin-top: 0.15rem;
   }
 
-  .intro-cats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.75rem;
-    list-style: none;
-    margin: 2.25rem 0 0;
-    padding: 0;
-  }
-
-  .intro-cats a {
-    font-size: 0.95rem;
-    letter-spacing: 0.04em;
-    border-bottom: 1px solid var(--ink);
-    padding-bottom: 0.12rem;
-  }
-
-  .intro-cats a:hover {
-    opacity: 0.55;
-  }
-
   .intro-place {
-    margin: 2.5rem 0 0;
+    margin: 1.75rem 0 0;
     font-size: 0.78rem;
     letter-spacing: 0.16em;
     color: var(--ink-mute);

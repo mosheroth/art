@@ -41,7 +41,7 @@ export const HOME_CATEGORIES = [
     label: 'נוף',
     query: 'subject=landscape',
     lead: 'מקומות שאני עובר בהם.',
-    slugs: ['yarkon-etz-al-hamayim', 'tlat-panel-etzim', 'park-sepia', 'sargent-stream-shadow'],
+    slugs: ['yarkon-etz-al-hamayim', 'park-sepia', 'sargent-stream-shadow', 'under-the-canopy'],
   },
   {
     id: 'sale',

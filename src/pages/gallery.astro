@@ -13,7 +13,7 @@ const sort = url.searchParams.get('sort') ?? '';
 const validSort = ['price-asc', 'price-desc'].includes(sort) ? sort : '';
 
 const artworks = await allArtworks();
-const availableCount = artworks.filter((artwork) => !artwork.data.sold).length;
+const availableCount = artworks.filter((artwork) => artwork.data.price && !artwork.data.sold).length;
 ---
 
 <BaseLayout title={`עבודות | ${SITE.name}`} description="כל ציורי צבעי המים — מידות, מחירים וזמינות.">
