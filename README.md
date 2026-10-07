@@ -19,7 +19,7 @@ Open [http://localhost:4321/art](http://localhost:4321/art) (the `base` is set i
 | --- | --- |
 | `/` | Home: intro beside a framed painting, then a mixed hang |
 | `/gallery` | The shop: every artwork with price and availability, plus subject/price/status filters and sorting |
-| `/about` | The artist story, with a portrait and a few related paintings |
+| `/about` | The artist story, with a few related paintings |
 | `/artwork/[slug]` | One painting, shown large, with details, purchase info, a room mock-up and related works |
 | `/workshops` | Placeholder for future workshops |
 | `/passe-partout` | Client-side tool that adds a white mat to an uploaded image |
@@ -37,7 +37,6 @@ All site text, plus which paintings appear where, live in `src/lib/site.ts`:
 - `HOME_CATEGORIES` — header and footer links into the gallery (גוף, תל אביב, נוף, למכירה)
 - `HOME_FEATURED_SLUG` — the painting framed beside the home intro
 - `HOME_MIX_SLUGS` — the mixed hang of paintings on the home page
-- `PORTRAIT_SLUG` — the painting used beside the artist story on `/about`
 - `COPY` — Hebrew strings on the home, gallery and about pages
 
 ### Adding artwork

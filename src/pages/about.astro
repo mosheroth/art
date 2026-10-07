@@ -1,17 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { COPY, PORTRAIT_SLUG, SITE } from '../lib/site';
-import { allArtworks, curatedArtworks, heTitle } from '../lib/artworks';
-import { imageSize } from '../lib/imageSize';
+import { COPY, SITE } from '../lib/site';
+import { curatedArtworks, heTitle } from '../lib/artworks';
 import { img, url, artworkUrl } from '../lib/paths';
 
-const artworks = await allArtworks();
-const portrait = artworks.find((artwork) => artwork.slug === PORTRAIT_SLUG) ?? artworks[0];
-const portraitSize = imageSize(portrait.data.image);
 const strip = await curatedArtworks(
   ['sargent-stream-shadow', 'tel-aviv-ibn-gabirol-59', 'sea-after-storm'],
-  3,
-  [portrait.slug]
+  3
 );
 ---
 
@@ -32,17 +27,6 @@ const strip = await curatedArtworks(
         {COPY.aboutBody.map((paragraph) => <p>{paragraph}</p>)}
         <p class="about-signature">{SITE.name}</p>
       </div>
-
-      <figure class="about-portrait">
-        <img
-          src={img(portrait.data.image)}
-          alt={heTitle(portrait)}
-          width={portraitSize?.width}
-          height={portraitSize?.height}
-          loading="lazy"
-        />
-        <figcaption>{heTitle(portrait)} — צבעי מים על נייר</figcaption>
-      </figure>
     </div>
 
     <ul class="about-strip">
@@ -78,10 +62,6 @@ const strip = await curatedArtworks(
   }
 
   .about-body {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    gap: clamp(2.5rem, 6vw, 5rem);
-    align-items: start;
     padding-bottom: clamp(3rem, 6vw, 5rem);
   }
 
@@ -96,21 +76,6 @@ const strip = await curatedArtworks(
     font-size: 1.5rem;
     color: var(--ink) !important;
     margin-top: 2rem !important;
-  }
-
-  .about-portrait {
-    margin: 0;
-    padding: 1rem 1rem 0;
-    background: var(--paper-white);
-    box-shadow: 0 18px 45px -30px rgba(0, 0, 0, 0.35);
-    border: 1px solid var(--line-soft);
-  }
-
-  .about-portrait figcaption {
-    padding: 0.9rem 0.2rem 1rem;
-    font-size: 0.8rem;
-    color: var(--ink-mute);
-    text-align: center;
   }
 
   .about-strip {
@@ -145,15 +110,5 @@ const strip = await curatedArtworks(
     align-items: center;
     gap: 1.5rem 2.5rem;
     padding-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  @media (max-width: 880px) {
-    .about-body {
-      grid-template-columns: 1fr;
-    }
-
-    .about-portrait {
-      max-width: 340px;
-    }
   }
 </style>

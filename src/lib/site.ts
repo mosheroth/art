@@ -7,9 +7,6 @@ export const SITE = {
   instagramHandle: '@mosheroth85',
 };
 
-/** Artwork standing in for a studio portrait on the about page. */
-export const PORTRAIT_SLUG = 'profile-portrait';
-
 /** Header and footer links into the gallery. */
 export const HOME_CATEGORIES = [
   { id: 'figure', label: 'גוף', query: 'subject=figure' },
