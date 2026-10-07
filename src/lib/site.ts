@@ -7,75 +7,54 @@ export const SITE = {
   instagramHandle: '@mosheroth85',
 };
 
-/** Artwork shown large at the top of the home page. */
-export const HERO_SLUG = 'sea-after-storm';
-
-/** Wide artwork used for the full-bleed band in the middle of the home page. */
-export const WIDE_FEATURE_SLUG = 'tel-aviv-ibn-gabirol-59';
-
-/** Artwork standing in for a studio portrait in the artist section. */
+/** Artwork standing in for a studio portrait on the about page. */
 export const PORTRAIT_SLUG = 'profile-portrait';
 
-/** Curated order for the home page gallery; anything missing falls back to the rest of the collection. */
-export const SELECTED_SLUGS = [
-  'sargent-stream-shadow',
-  'purple-storm',
-  'polina-4',
-  'flowers-batya-3',
+/** Header and footer links into the gallery. */
+export const HOME_CATEGORIES = [
+  { id: 'figure', label: 'גוף', query: 'subject=figure' },
+  { id: 'tel-aviv', label: 'תל אביב', query: 'subject=tel-aviv' },
+  { id: 'landscape', label: 'נוף', query: 'subject=landscape' },
+  { id: 'sale', label: 'למכירה', query: 'status=available' },
+] as const;
+
+/** Mixed order on the home page — figure, city and landscape together, not in bands. */
+export const HOME_MIX_SLUGS = [
+  'anna-kruken-1',
+  'torso-sepia',
+  'barzel-bashekiya',
   'figures-in-water',
+  'yarkon-etz-al-hamayim',
+  'anna-kruken-2',
+  'sepia-seated-figure',
+  'rakevet-hashalom',
+  'flowers-batya-3',
+  'simta-besharona',
+  'park-sepia',
+  'polina-4',
+  'sea-after-storm',
+  'ayalon',
+  'siman-70',
+  'anna-kruken-3',
+  'sepia-reclining-figure',
+  'kikar-rabin',
+  'sargent-stream-shadow',
+  'seated-figure-profile',
   'under-the-canopy',
-  'horizon',
-  'urban-landscape',
 ];
 
 export const COPY = {
-  heroEyebrow: 'צבעי מים · הוד השרון',
-  heroTitle: 'לצייר את המקום\nשבו אני חי',
-  heroLead:
-    'שכונות של הוד השרון, גדות הירקון, רחובות תל אביב והים שאחרי הסערה — נצבעים על נייר, בחוץ, בזמן שהאור עוד זז.',
-  heroCtaWorks: 'לעבודות',
-  heroCtaSale: 'ציורים למכירה',
-  heroScroll: 'גללו',
-
-  artistEyebrow: 'על האמן',
-  artistQuote:
-    'צבעי מים לא מאפשרים להתחרט. צריך להסתכל טוב, לבחור מה חשוב, ולתת למים לעשות את השאר.',
-  artistBody: [
-    'אני מצייר את מה שנמצא ממש מסביב: פינת רחוב בהוד השרון, שביל בירקון בשעה שהצל מתארך, חצר עם עץ אחד גדול מדי, וים שרק עכשיו נרגע. הכל נעשה בצבעי מים על נייר — רוב הפעמים בשטח, בישיבה אחת, בלי לתקן יותר מדי.',
-    'מה שמעניין אותי הוא הרגע שבו כמות המים על הנייר עוד לא הוכרעה: איפה הצבע יזלוג, איפה הנייר יישאר לבן, ואיפה מספיק כתם אחד כדי שיהיה שם בית. לכן הציורים נשארים פתוחים, ולפעמים מהירים יותר ממה שנוח לי.',
-  ],
-  artistFactsLabel: 'בקצרה',
-  artistSignature: 'משה רוט',
-  artistMore: 'לקרוא עוד',
-
-  worksEyebrow: 'עבודות נבחרות',
-  worksTitle: 'מבחר מהתיקייה',
-  worksLead: 'מקומות, דמויות וימים — בגדלים שונים, כולם מקור על נייר.',
-  worksAll: 'לכל העבודות',
-
-  featureQuote: 'אותו רחוב, אור אחר — וזה כבר ציור אחר.',
-  featureLink: 'לעמוד העבודה',
-
-  seriesEyebrow: 'נושאים',
-  seriesTitle: 'מה שחוזר בציורים',
-  seriesLead: 'העבודות מסתדרות לקבוצות מעצמן. בחרו נושא כדי לראות את כולו.',
-
-  saleEyebrow: 'רכישה',
-  saleTitle: 'אפשר לקחת ציור הביתה',
-  saleBody:
-    'כל עבודה היא מקור אחד על נייר, ללא הדפסים וללא עותקים. המחירים מתחילים ב־₪70, ואפשר לראות את כל הציורים יחד עם המחיר והזמינות בדף העבודות. לשאלות, התאמה לחלל או איסוף — הדרך הקצרה היא הודעה באינסטגרם.',
-  saleCta: 'לדף הרכישה',
-  saleNote: 'מסירה בהוד השרון ובמרכז, או משלוח בתיאום.',
+  introTitle: 'משה רוט',
+  introLead: 'צבעי מים על נייר.',
+  introBody: 'גוף, תל אביב, נוף.',
 
   contactEyebrow: 'יצירת קשר',
   contactTitle: 'נשמח לשמוע',
-  contactBody:
-    'מתעניינים בציור מסוים, רוצים לצייר יחד בשטח, או סתם להגיד שלום — אני עונה לכל הודעה.',
+  contactBody: 'מתעניינים בציור, בגלריה, או סתם להגיד שלום — אני עונה לכל הודעה.',
   contactCta: 'אינסטגרם',
 
   galleryTitle: 'עבודות',
-  galleryLead:
-    'כל הציורים שבאתר, עם מחיר וזמינות. הסינון והמיון עוזרים למצוא מה שמתאים לחלל שלכם.',
+  galleryLead: 'כל הציורים שבאתר. הסינון לפי נושא, מחיר וזמינות.',
 
   aboutTitle: 'על האמן',
   aboutLead: 'צבעי מים, בעיקר בשטח, בעיקר מהמקומות שאני עובר בהם כל יום.',

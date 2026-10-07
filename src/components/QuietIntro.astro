@@ -1,0 +1,42 @@
+---
+import { COPY } from '../lib/site';
+---
+
+<section class="intro">
+  <div class="shell intro-inner">
+    <p class="intro-name">{COPY.introTitle}</p>
+    <p class="intro-lead">{COPY.introLead}</p>
+    <p class="intro-body">{COPY.introBody}</p>
+  </div>
+</section>
+
+<style>
+  .intro {
+    padding-block: clamp(2.75rem, 7vw, 5rem) clamp(2.25rem, 5vw, 3.5rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .intro-inner {
+    max-width: 36rem;
+  }
+
+  .intro-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 400;
+    line-height: 1.05;
+    margin: 0 0 0.85rem;
+  }
+
+  .intro-lead,
+  .intro-body {
+    margin: 0;
+    font-size: clamp(1.05rem, 0.4vw + 1rem, 1.25rem);
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+
+  .intro-body {
+    margin-top: 0.15rem;
+  }
+</style>

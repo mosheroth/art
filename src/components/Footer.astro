@@ -1,21 +1,21 @@
 ---
-import { SITE } from '../lib/site';
+import { HOME_CATEGORIES, SITE } from '../lib/site';
 import { url } from '../lib/paths';
 
 const columns = [
   {
+    title: 'עבודות',
+    links: HOME_CATEGORIES.map((cat) => ({
+      href: `${url('gallery')}?${cat.query}`,
+      label: cat.label,
+    })),
+  },
+  {
     title: 'באתר',
     links: [
       { href: url(''), label: 'בית' },
-      { href: url('gallery'), label: 'עבודות' },
+      { href: url('gallery'), label: 'כל העבודות' },
       { href: url('about'), label: 'על האמן' },
-    ],
-  },
-  {
-    title: 'רכישה',
-    links: [
-      { href: `${url('gallery')}?status=available`, label: 'ציורים זמינים' },
-      { href: url('passe-partout'), label: 'כלי פספרטו' },
     ],
   },
 ];
@@ -53,10 +53,8 @@ const columns = [
 
 <style>
   .footer {
-    background: var(--paper-deep);
-    border-top: 1px solid var(--line-soft);
-    padding-block: clamp(3.5rem, 7vw, 6rem) 2rem;
-    margin-top: clamp(4rem, 8vw, 7rem);
+    border-top: 1px solid var(--line);
+    padding-block: clamp(2.5rem, 5vw, 4rem) 1.5rem;
   }
 
   .footer-inner {
@@ -64,45 +62,42 @@ const columns = [
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
   .footer-name {
     font-family: var(--font-display);
-    font-size: clamp(1.9rem, 4vw, 2.75rem);
-    font-weight: 300;
-    margin: 0 0 0.4rem;
+    font-size: 1.35rem;
+    font-weight: 400;
+    margin: 0 0 0.35rem;
   }
 
   .footer-tagline {
-    margin: 0 0 1.25rem;
-    font-size: 0.95rem;
+    margin: 0 0 0.85rem;
+    font-size: 0.85rem;
     letter-spacing: 0.1em;
     color: var(--ink-mute);
   }
 
   .footer-handle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     border-bottom: 1px solid var(--line);
-    padding-bottom: 0.15rem;
-    transition: border-color 0.2s ease;
+    padding-bottom: 0.1rem;
   }
 
   .footer-handle:hover {
-    border-color: var(--ink);
+    border-bottom-color: var(--ink);
   }
 
   .footer-cols {
     display: flex;
-    flex-wrap: wrap;
     gap: 3.5rem;
   }
 
   .footer-col-title {
-    margin: 0 0 0.9rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
+    margin: 0 0 0.85rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
     color: var(--ink-mute);
   }
 
@@ -110,35 +105,31 @@ const columns = [
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: 0.6rem;
+  }
+
+  .footer-col li + li {
+    margin-top: 0.45rem;
   }
 
   .footer-col a {
-    font-size: 1rem;
-    color: var(--ink-soft);
-    transition: color 0.2s ease;
+    font-size: 0.95rem;
   }
 
   .footer-col a:hover {
-    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
   .footer-base {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
-    margin-top: clamp(3rem, 6vw, 5rem);
-    padding-top: 1.5rem;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
     border-top: 1px solid var(--line-soft);
-    font-size: 0.85rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
     color: var(--ink-mute);
-  }
-
-  @media (max-width: 640px) {
-    .footer-cols {
-      gap: 2.5rem;
-    }
   }
 </style>
