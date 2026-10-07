@@ -1,23 +1,14 @@
 ---
-import { HOME_CATEGORIES, SITE } from '../lib/site';
+import { NAV_LINKS, SITE } from '../lib/site';
 import { url } from '../lib/paths';
 
-const columns = [
-  {
-    title: 'עבודות',
-    links: HOME_CATEGORIES.map((cat) => ({
-      href: `${url('gallery')}?${cat.query}`,
-      label: cat.label,
-    })),
-  },
-  {
-    title: 'באתר',
-    links: [
-      { href: url(''), label: 'בית' },
-      { href: url('gallery'), label: 'כל העבודות' },
-      { href: url('about'), label: 'על האמן' },
-    ],
-  },
+const links = [
+  { href: url(''), label: 'בית' },
+  ...NAV_LINKS.map((link) => ({
+    href: 'query' in link ? `${url(link.path)}?${link.query}` : url(link.path),
+    label: link.label,
+  })),
+  { href: url('gallery'), label: 'כל העבודות' },
 ];
 ---
 
@@ -31,18 +22,14 @@ const columns = [
       </a>
     </div>
 
-    <div class="footer-cols">
-      {columns.map((col) => (
-        <nav class="footer-col" aria-label={col.title}>
-          <p class="footer-col-title">{col.title}</p>
-          <ul>
-            {col.links.map((link) => (
-              <li><a href={link.href}>{link.label}</a></li>
-            ))}
-          </ul>
-        </nav>
-      ))}
-    </div>
+    <nav class="footer-col" aria-label="באתר">
+      <p class="footer-col-title">באתר</p>
+      <ul>
+        {links.map((link) => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
   </div>
 
   <div class="shell footer-base">
@@ -87,11 +74,6 @@ const columns = [
 
   .footer-handle:hover {
     border-bottom-color: var(--ink);
-  }
-
-  .footer-cols {
-    display: flex;
-    gap: 3.5rem;
   }
 
   .footer-col-title {

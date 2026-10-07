@@ -1,42 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE } from '../lib/site';
-import { url } from '../lib/paths';
+import { COPY, SITE } from '../lib/site';
 ---
 
-<BaseLayout title={`סדנאות | ${SITE.name}`} description="סדנאות צבעי מים בשטח">
-  <div class="shell">
+<BaseLayout title={`סדנאות | ${SITE.name}`} description={COPY.workshopsEmpty}>
   <article class="workshops">
-    <span class="eyebrow">בקרוב</span>
-    <h1 class="display-lg">סדנאות צבעי מים</h1>
-    <p class="lead">
-      ימי ציור בשטח בקבוצות קטנות — בהוד השרון, בירקון ובחוף. הפרטים והמועדים יתפרסמו כאן.
-    </p>
-    <div class="workshops-actions">
-      <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-solid">
-        לעדכונים באינסטגרם
-      </a>
-      <a href={url('gallery')} class="link-underline">בינתיים, לעבודות</a>
+    <header class="shell workshops-head">
+      <h1 class="display-xl">{COPY.workshopsTitle}</h1>
+    </header>
+
+    <div class="shell workshops-body">
+      <p class="lead">{COPY.workshopsEmpty}</p>
     </div>
   </article>
-  </div>
 </BaseLayout>
 
 <style>
-  .workshops {
-    max-width: 700px;
-    padding-block: clamp(3rem, 8vw, 6rem);
+  .workshops-head {
+    padding-block: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 3vw, 2.5rem);
   }
 
-  .workshops .lead {
-    margin: 1.5rem 0 0;
+  .workshops-body {
+    padding-bottom: clamp(4rem, 10vw, 8rem);
   }
 
-  .workshops-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1.25rem 2rem;
-    margin-top: 2.5rem;
+  .workshops-body .lead {
+    margin: 0;
+    max-width: 36rem;
   }
 </style>

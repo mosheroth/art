@@ -2,7 +2,7 @@
 
 A portfolio-first site for a watercolour painter working from local subjects (Hod HaSharon, the Yarkon, Tel Aviv, the coast). Built with Astro, Hebrew/RTL, deployed to GitHub Pages.
 
-The home page is quiet black-and-white chrome: a short intro beside a framed featured painting, then a mixed hang of works. The four bodies of work — figure, Tel Aviv, landscape, and works for sale — live in the header and on `/gallery`.
+The home page is quiet black-and-white chrome: a short intro beside a framed featured painting, then a mixed hang of works. The header links to works for sale, workshops, and the about page. Subject filters still live on `/gallery`.
 
 ## Quick Start
 
@@ -21,7 +21,7 @@ Open [http://localhost:4321/art](http://localhost:4321/art) (the `base` is set i
 | `/gallery` | The shop: every artwork with price and availability, plus subject/price/status filters and sorting |
 | `/about` | The artist story |
 | `/artwork/[slug]` | One painting, shown large, with details, purchase info, a room mock-up and related works |
-| `/workshops` | Placeholder for future workshops |
+| `/workshops` | Workshops page; currently empty aside from a short notice |
 | `/passe-partout` | Client-side tool that adds a white mat to an uploaded image |
 | `/250`, `/500`, `/800`, `/donation` | Legacy short links, redirected into `/gallery` with the matching filter |
 
@@ -34,7 +34,7 @@ Open [http://localhost:4321/art](http://localhost:4321/art) (the `base` is set i
 All site text, plus which paintings appear where, live in `src/lib/site.ts`:
 
 - `SITE` — name, discipline, location, Instagram
-- `HOME_CATEGORIES` — header and footer links into the gallery (גוף, תל אביב, נוף, למכירה)
+- `NAV_LINKS` — header and footer links (למכירה, סדנאות, על האמן)
 - `HOME_FEATURED_SLUG` — the painting framed beside the home intro
 - `HOME_MIX_SLUGS` — the mixed hang of paintings on the home page
 - `COPY` — Hebrew strings on the home, gallery and about pages

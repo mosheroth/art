@@ -7,12 +7,11 @@ export const SITE = {
   instagramHandle: '@mosheroth85',
 };
 
-/** Header and footer links into the gallery. */
-export const HOME_CATEGORIES = [
-  { id: 'figure', label: 'גוף', query: 'subject=figure' },
-  { id: 'tel-aviv', label: 'תל אביב', query: 'subject=tel-aviv' },
-  { id: 'landscape', label: 'נוף', query: 'subject=landscape' },
-  { id: 'sale', label: 'למכירה', query: 'status=available' },
+/** Header and footer site links. */
+export const NAV_LINKS = [
+  { label: 'למכירה', path: 'gallery', query: 'status=available', match: 'status=available' },
+  { label: 'סדנאות', path: 'workshops', match: 'workshops' },
+  { label: 'על האמן', path: 'about', match: 'about' },
 ] as const;
 
 /** Featured painting beside the home intro, in a black frame. */
@@ -51,6 +50,9 @@ export const COPY = {
 
   galleryTitle: 'עבודות',
   galleryLead: 'כל הציורים שבאתר. הסינון לפי נושא, מחיר וזמינות.',
+
+  workshopsTitle: 'סדנאות',
+  workshopsEmpty: 'כרגע אין סדנאות חדשות.',
 
   aboutTitle: 'על האמן',
   aboutBody: [

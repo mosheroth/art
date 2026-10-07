@@ -1,15 +1,12 @@
 ---
-import { HOME_CATEGORIES, SITE } from '../lib/site';
+import { NAV_LINKS, SITE } from '../lib/site';
 import { url } from '../lib/paths';
 
-const navLinks = [
-  ...HOME_CATEGORIES.map((cat) => ({
-    href: `${url('gallery')}?${cat.query}`,
-    label: cat.label,
-    match: cat.query,
-  })),
-  { href: url('about'), label: 'על האמן', match: 'about' },
-];
+const navLinks = NAV_LINKS.map((link) => ({
+  href: 'query' in link ? `${url(link.path)}?${link.query}` : url(link.path),
+  label: link.label,
+  match: link.match,
+}));
 
 const currentPath = Astro.url.pathname.replace(url(''), '').replace(/\/$/, '');
 const currentSearch = Astro.url.search.replace(/^\?/, '');
