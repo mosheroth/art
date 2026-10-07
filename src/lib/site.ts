@@ -18,6 +18,9 @@ export const HOME_CATEGORIES = [
   { id: 'sale', label: 'למכירה', query: 'status=available' },
 ] as const;
 
+/** Featured painting beside the home intro, in a black frame. */
+export const HOME_FEATURED_SLUG = 'sepia-seated-figure';
+
 /** Mixed order on the home page — figure, city and landscape together, not in bands. */
 export const HOME_MIX_SLUGS = [
   'anna-kruken-1',
@@ -26,12 +29,9 @@ export const HOME_MIX_SLUGS = [
   'figures-in-water',
   'yarkon-etz-al-hamayim',
   'anna-kruken-2',
-  'sepia-seated-figure',
   'rakevet-hashalom',
-  'flowers-batya-3',
   'simta-besharona',
   'park-sepia',
-  'polina-4',
   'sea-after-storm',
   'ayalon',
   'siman-70',
@@ -40,7 +40,6 @@ export const HOME_MIX_SLUGS = [
   'kikar-rabin',
   'sargent-stream-shadow',
   'seated-figure-profile',
-  'under-the-canopy',
 ];
 
 export const COPY = {

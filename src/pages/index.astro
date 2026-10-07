@@ -3,17 +3,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import QuietIntro from '../components/QuietIntro.astro';
 import HomeMix from '../components/HomeMix.astro';
 import ContactBand from '../components/ContactBand.astro';
-import { HOME_MIX_SLUGS, SITE } from '../lib/site';
-import { curatedArtworks } from '../lib/artworks';
+import { HOME_FEATURED_SLUG, HOME_MIX_SLUGS, SITE } from '../lib/site';
+import { artworkBySlug, curatedArtworks } from '../lib/artworks';
 
-const works = await curatedArtworks([...HOME_MIX_SLUGS], HOME_MIX_SLUGS.length);
+const featured = await artworkBySlug(HOME_FEATURED_SLUG);
+const works = await curatedArtworks(
+  [...HOME_MIX_SLUGS],
+  HOME_MIX_SLUGS.length,
+  featured ? [featured.slug] : []
+);
 ---
 
 <BaseLayout
   title={`${SITE.name} — ציורי צבעי מים`}
   description="ציורי צבעי מים של משה רוט: גוף, תל אביב, נוף. עבודות מקור על נייר, וגם למכירה."
 >
-  <QuietIntro />
+  <QuietIntro artwork={featured} />
   <HomeMix artworks={works} />
   <ContactBand />
 </BaseLayout>
