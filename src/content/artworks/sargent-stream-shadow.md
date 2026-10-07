@@ -7,7 +7,7 @@ year: "2026"
 medium: Watercolor on paper
 size: 21 × 29 cm
 price: "₪900"
-sold: false
+sold: true
 subjects: [landscape]
 ---
 
