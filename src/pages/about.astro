@@ -43,18 +43,6 @@ const strip = await curatedArtworks(
       </figure>
     </div>
 
-    <section class="shell about-practice">
-      <h2 class="display-lg">{COPY.aboutPracticeTitle}</h2>
-      <dl>
-        {COPY.aboutPractice.map((item) => (
-          <div class="practice-row">
-            <dt>{item.label}</dt>
-            <dd>{item.value}</dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-
     <ul class="about-strip">
       {strip.map((artwork) => (
         <li>
@@ -129,38 +117,6 @@ const strip = await curatedArtworks(
     text-align: center;
   }
 
-  .about-practice {
-    padding-block: clamp(2.5rem, 5vw, 4rem);
-    border-top: 1px solid var(--line-soft);
-  }
-
-  .about-practice dl {
-    margin: clamp(1.75rem, 4vw, 2.75rem) 0 0;
-  }
-
-  .practice-row {
-    display: grid;
-    grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr);
-    gap: 1rem 2rem;
-    padding: 1.1rem 0;
-    border-top: 1px solid var(--line-soft);
-  }
-
-  .practice-row dt {
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    color: var(--ink-mute);
-    padding-top: 0.45rem;
-  }
-
-  .practice-row dd {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
-    font-weight: 300;
-  }
-
   .about-strip {
     list-style: none;
     margin: clamp(2rem, 5vw, 3.5rem) 0 0;
@@ -202,15 +158,6 @@ const strip = await curatedArtworks(
 
     .about-portrait {
       max-width: 340px;
-    }
-
-    .practice-row {
-      grid-template-columns: 1fr;
-      gap: 0.35rem;
-    }
-
-    .practice-row dt {
-      padding-top: 0;
     }
   }
 </style>

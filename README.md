@@ -19,7 +19,7 @@ Open [http://localhost:4321/art](http://localhost:4321/art) (the `base` is set i
 | --- | --- |
 | `/` | Home: intro beside a framed painting, then a mixed hang |
 | `/gallery` | The shop: every artwork with price and availability, plus subject/price/status filters and sorting |
-| `/about` | The artist story in full, with a short "how it works" list |
+| `/about` | The artist story, with a portrait and a few related paintings |
 | `/artwork/[slug]` | One painting, shown large, with details, purchase info, a room mock-up and related works |
 | `/workshops` | Placeholder for future workshops |
 | `/passe-partout` | Client-side tool that adds a white mat to an uploaded image |
