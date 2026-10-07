@@ -9,7 +9,7 @@ export const SITE = {
 
 /** Header and footer site links. */
 export const NAV_LINKS = [
-  { label: 'למכירה', path: 'gallery', query: 'status=available', match: 'status=available' },
+  { label: 'עבודות', path: 'gallery', match: 'gallery' },
   { label: 'סדנאות', path: 'workshops', match: 'workshops' },
   { label: 'על האמן', path: 'about', match: 'about' },
 ] as const;
